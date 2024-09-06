@@ -9,59 +9,49 @@ Clean up the UI and enhance some basic defaults
   :ensure nil
   :diminish which-key-mode
   :config
-  (setq ring-bell-function 'ignore
-        frame-resize-pixelwise t)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (column-number-mode t)
   (which-key-mode t)
   (global-hl-line-mode t)
-  ;; y-or-n instead of yes-or-no
+  (show-paren-mode t)
+
+  (setq ring-bell-function 'ignore
+        frame-resize-pixelwise t)
+  (setq show-paren-delay 0)
   (setq use-short-answers t)
-  ;; disable confirmation if a file or buffer doesn't exist
   (setq confirm-nonexistent-file-or-buffer nil)
-  ;; better scrolling experience
   (setq scroll-margin 0
         scroll-conservatively 101
         scroll-preserve-screen-position t
         auto-window-vscroll nil)
-  ;; Omit default startup screen
   (setq inhibit-startup-screen t)
-  ;; Support opening new minibuffers from inside existing minibuffers
   (setq enable-recursive-minibuffers t)
   ;; Hide commands in M-x which do not work in the current mode
   (setq read-extended-command-predicate #'command-completion-default-include-p)
   :init
-  ;; Add prompt indicator to `completing-read-multiple`
-  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma
-  (defun crm-indicator (args)
-    (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-  ;; TAB cycle if there are only few candidates
-  (setq completion-cycle-threshold 3)
-  ;; Enable indentation+completion using the TAB key
-  ;; `completion-at-point` is often bound to M-TAB
-  (setq tab-always-indent 'complete)
-  ;; Disable Ispell completion function
+  (setq completion-cycle-threshold 3
+        tab-always-indent 'complete)
   (require-theme 'modus-themes)
-  ;; Modus themes customizations here
   (setq modus-themes-bold-constructs t
         modus-themes-italic-constructs t)
-  (setq modus-themes-common-palette-overrides
-        modus-themes-preset-overrides-intense)
+  (load-theme 'modus-operandi-tinted)
   ;; Remove major mode and VC indicator from the mode-line
   (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
   (setq-default mode-line-format (delete '(vc-mode vc-mode) mode-line-format))
-  (load-theme 'modus-operandi)
+  ;; Disable ispell
   (setq text-mode-ispell-word-completion nil)
+  ;; Backup configuration
+  (setq backup-directory-alist `(("." . "~/.config/emacs/saves"))
+        delete-old-versions t
+        kept-new-versions 6
+        kept-old-versions 2
+        version-control t)
   ;; Global keymaps
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (global-set-key (kbd "C-c l") 'org-store-link)
@@ -76,18 +66,6 @@ might as well try to organize under the same syntax as much as
 possible to keep the configuration consistent. The option
 ~use-package-always-ensure~ is turned on in ~init.el~, so we'll add
 ~:ensure nil~ when configuring the built-in packages.
-** Disable scroll-bar
-#+begin_src emacs-lisp
-(use-package scroll-bar
-  :ensure nil
-  :config (scroll-bar-mode -1))
-#+end_src
-** Enable column numbers
-#+begin_src emacs-lisp
-(use-package simple
-  :ensure nil
-  :config (column-number-mode +1))
-#+end_src
 ** Mouse wheel (track-pad) scroll speed
 By default, the scrolling is way too fast to be precise and helpful,
 tune it down a little bit
@@ -97,14 +75,7 @@ tune it down a little bit
   :config (setq mouse-wheel-scroll-amount '(2 ((shift) .1))
                 mouse-wheel-progressive-speed nil))
 #+end_src
-** Show matching parentheses
-Reduce the highlight delay to instantly
-#+begin_src emacs-lisp
-(use-package paren
-  :ensure nil
-  :init (setq show-paren-delay 0)
-  :config (show-paren-mode +1))
-#+end_src
+
 ** Setting up some frame defaults
 Maximize the frame by default on start-up. Set the font to size 15
 #+begin_src emacs-lisp
@@ -120,6 +91,7 @@ Maximize the frame by default on start-up. Set the font to size 15
   (setq initial-frame-alist '((fullscreen . maximized)))
   (my-set-default-font))
 #+end_src
+
 ** Ediff tweaks
 Enter ediff with side-by-side buffers to better compare the
 differences
@@ -130,6 +102,7 @@ differences
   (setq ediff-window-setup-function #'ediff-setup-windows-plain
         ediff-split-window-function #'split-window-horizontally))
 #+end_src
+
 ** Auto-pairing quotes and parentheses etc.
 #+begin_src emacs-lisp
 (use-package elec-pair
@@ -142,12 +115,14 @@ differences
                                          `(lambda (c)
                                             (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c)))))))
 #+end_src
+
 ** Clean up whitespaces on save
 #+begin_src emacs-lisp
 (use-package whitespace
   :ensure nil
   :hook (before-save . whitespace-cleanup))
 #+end_src
+
 ** Dired tweaks
 Delete intermediate buffers when navigating through dired
 #+begin_src emacs-lisp
@@ -162,7 +137,7 @@ Delete intermediate buffers when navigating through dired
 #+end_src
 
 * Third-party-packages
-Normally, we need to add ~:ensure t~ to tell ~use-package~ to download packages
+Normally, we need tool-bar-mode add ~:ensure t~ to tell ~use-package~ to download packages
 when it's not available. But since we've added ~use-package-always-ensure~ in
 ~early-init.el~, we can omit it
 ** Clean config folder
@@ -170,6 +145,7 @@ no-littering helps keeping ~/.config/emacs clean
 #+begin_src emacs-lisp
 (use-package no-littering)
 #+end_src
+
 ** Evil keybindings
 Apart from vi emulation, set ~:q~ and ~:wq~ to be killing current buffer, instead
 of killing the frame or subsequently killing Emacs
@@ -200,6 +176,7 @@ of killing the frame or subsequently killing Emacs
   (evil-ex-define-cmd "q" #'kill-this-buffer)
   (evil-ex-define-cmd "wq" #'my-save-and-kill-this-buffer))
 #+end_src
+
 Evil-collection covers more parts of Emacs that the original Evil
 doesn't support (e.g. Packages buffer, eshell, calendar etc.)
 #+begin_src emacs-lisp
@@ -210,16 +187,18 @@ doesn't support (e.g. Packages buffer, eshell, calendar etc.)
   (setq evil-collection-setup-minibuffer t)
   (evil-collection-init))
 #+end_src
+
 Emulates tpope's vim commentary package (Use ~gcc~ to comment out a line,
 ~gc~ to comment out the target of a motion (for example, ~gcap~ to
 comment out a paragraph), ~gc~ in visual mode to comment out the
 selection etc.)
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package evil-commentary
     :after evil
     :diminish
     :config (evil-commentary-mode +1))
-#+END_SRC
+#+END_src
+
 ** Magit
 Tell magit to automatically put us in vi-insert-mode when commiting a change
 #+begin_src emacs-lisp
@@ -227,6 +206,7 @@ Tell magit to automatically put us in vi-insert-mode when commiting a change
   :bind ("C-x g" . magit-status)
   :config (add-hook 'with-editor-mode-hook #'evil-insert-state))
 #+end_src
+
 ** Searching/sorting enhancements and autocompletion
 Vertico provides a performant and minimalistic vertical completion UI based
 on the default completion system
@@ -246,6 +226,7 @@ on the default completion system
               ("M-DEL" . vertico-directory-delete-word))
   :hook (rfn-eshadow-update-overlay . vertico-diretory-tidy))
 #+end_src
+
 Orderless provides a completion style that divides thte pattern into
 space-separated components and matches candidates that match all of the
 components in any order
@@ -257,6 +238,7 @@ components in any order
         completion-category-defaults nil
         completion-category-overrides '((file (styles basic partial-completion)))))
 #+end_src
+
 Corfu enhances in-buffer completion with a small completion popup
 It is a minimalistic buffer completion counterpart of the ~Vertico~
 minibuffer UI
@@ -269,6 +251,7 @@ minibuffer UI
   :init
   (global-corfu-mode))
 #+end_src
+
 Cape provides Completion At Point Extensions which can be used in
 combination with ~Corfu~
 #+begin_src emacs-lisp
@@ -279,6 +262,7 @@ combination with ~Corfu~
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-elisp-block))
 #+end_src
+
 Marginalia adds annotations to the minibuffer completions
 #+begin_src emacs-lisp
 (use-package marginalia
@@ -290,6 +274,7 @@ Marginalia adds annotations to the minibuffer completions
   :init
   (marginalia-mode))
 #+end_src
+
 ** Consult
 Consult provides search and navigation commands based on the Emacs
 function completing-read
@@ -347,8 +332,6 @@ function completing-read
          :map minibuffer-local-map
          ("M-s" . consult-history)                 ;; orig. next-matching-history-element
          ("M-r" . consult-history))                ;; orig. previous-matching-history-element
-  ;; Enable automatic preview at point in the *Completions* buffer. This is
-  ;; relevant when you use the default completion UI.
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :init
   ;; This improves the register preview for `consult-register',
@@ -361,13 +344,6 @@ function completing-read
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   :config
-  ;; Optionally configure preview. The default value
-  ;; is 'any, such that any key triggers the preview.
-  ;; (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key "M-.")
-  ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep
@@ -378,6 +354,7 @@ function completing-read
    :preview-key '(:debounce 0.4 any))
   (setq consult-narrow-key "<"))
 #+end_src
+
 Affe is an asynchronous fuzzy finder similar to ~fzf~
 #+begin_src emacs-lisp
 (use-package affe
@@ -387,6 +364,7 @@ Affe is an asynchronous fuzzy finder similar to ~fzf~
     (cons input (apply-partially #'orderless--highlight input t)))
   (setq affe-regexp-compiler #'affe-orderless-regexp-compiler))
 #+end_src
+
 ** Embark
 Embark makes it easy to choose a command to run based on what is near point,
 both during a minibuffer completion session and in normal buffers
@@ -409,6 +387,7 @@ both during a minibuffer completion session and in normal buffers
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
+
 ** Programming languages setup
 Eglot is a built-in LSP server
 #+begin_src emacs-lisp
@@ -434,6 +413,7 @@ Eglot is a built-in LSP server
               ("C-c s" . consult-eglot-symbols))
   :after consult eglot)
 #+end_src
+
 Some nicities like breadcrumbs and python tools
 #+begin_src emacs-lisp
 
@@ -445,6 +425,7 @@ Some nicities like breadcrumbs and python tools
 
 (use-package python-pytest)
 #+end_src
+
 Ibuffer-project provides ibuffer filtering and sorting functions to group buffers by
 custom functions or regexps
 By default buffers are grouped by project or by default directory
@@ -467,6 +448,7 @@ By default buffers are grouped by project or by default directory
              (mode 16 16 :left :elide)
              " " project-file-relative)))))
 #+end_src
+
 Avy is a package for jumping to visible text using a char-based decision tree
 #+begin_src emacs-lisp
 (use-package avy
@@ -475,6 +457,7 @@ Avy is a package for jumping to visible text using a char-based decision tree
   :config
   (setq avy-all-windows 'all-frames))
 #+end_src
+
 ** Diminish
 Diminish adds a ~:diminish~ keyword to the ~use-package~ macro to hide unimportant minor modes
 from the mode-line
@@ -482,6 +465,29 @@ from the mode-line
 (use-package diminish
   :demand t)
 #+end_src
+
+** Comment tags
+Highlight TODO, FIXME etc.
+#+begin_src emacs-lisp
+(use-package comment-tags
+  :config
+  (autoload 'comment-tags-mode "comment-tags-mode")
+  (setq comment-tags-keymap-prefix (kbd "C-c t"))
+  (with-eval-after-load "comment-tags"
+    (setq comment-tags-keyword-faces
+          `(("TODO" . ,(list :weight 'bold :foreground "#28ABE3"))
+            ("FIXME" . ,(list :weight 'bold :foreground "#DB3340"))
+            ("BUG" . ,(list :weight 'bold :foreground "#DB3340"))
+            ("HACK" . ,(list :weight 'bold :foreground "#E8B71A"))
+            ("DONE" . ,(list :weight 'bold :foreground "#1FDA9A"))))
+    (setq comment-tags-comment-start-only t
+          comment-tags-require-colon t
+          comment-tags-case-sensitive t
+          comment-tags-show-faces t
+          comment-tags-lighter nil))
+  (add-hook 'prog-mode-hook 'comment-tags-mode))
+#+end_src
+
 * Org mode
 #+begin_src emacs-lisp
 (use-package org
@@ -517,24 +523,6 @@ from the mode-line
            :empty-lines 0)
           ))
   )
-
-(use-package comment-tags
-  :config
-  (autoload 'comment-tags-mode "comment-tags-mode")
-  (setq comment-tags-keymap-prefix (kbd "C-c t"))
-  (with-eval-after-load "comment-tags"
-    (setq comment-tags-keyword-faces
-          `(("TODO" . ,(list :weight 'bold :foreground "#28ABE3"))
-            ("FIXME" . ,(list :weight 'bold :foreground "#DB3340"))
-            ("BUG" . ,(list :weight 'bold :foreground "#DB3340"))
-            ("HACK" . ,(list :weight 'bold :foreground "#E8B71A"))
-            ("DONE" . ,(list :weight 'bold :foreground "#1FDA9A"))))
-    (setq comment-tags-comment-start-only t
-          comment-tags-require-colon t
-          comment-tags-case-sensitive t
-          comment-tags-show-faces t
-          comment-tags-lighter nil))
-  (add-hook 'prog-mode-hook 'comment-tags-mode))
 
 (use-package org-super-agenda
   :hook (org-agenda-mode . org-super-agenda-mode))
