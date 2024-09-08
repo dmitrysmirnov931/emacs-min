@@ -1,5 +1,7 @@
-auto-save-list/
 config.el
+custom.el
+auto-save-list/
 elpa/
 etc/
 var/
+saves/
