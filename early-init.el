@@ -1,21 +1,5 @@
-(defvar file-name-handler-alist-original file-name-handler-alist)
-
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6
-      file-name-handler-alist nil
-      site-run-file nil)
-
-(defvar my-gc-cons-threshold gc-cons-threshold)
-(add-hook 'emacs-startup-hook ; hook run after loading init files
-	  (lambda ()
-	    (setq gc-cons-threshold my-gc-cons-threshold
-		  gc-cons-percentage 0.1
-		  file-name-handler-alist file-name-handler-alist-original)))
-(add-hook 'minibuffer-setup-hook (lambda ()
-				   (setq gc-cons-threshold (* my-gc-cons-threshold 2))))
-(add-hook 'minibuffer-exit-hook (lambda ()
-				  (garbage-collect)
-				  (setq gc-cons-threshold my-gc-cons-threshold)))
+;;; -*- lexical-binding: t -*-
+(set-face-attribute 'default nil :family "Iosevka" :height 150 :weight 'normal)
 
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
@@ -27,8 +11,6 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-(eval-and-compile
-  (setq use-package-always-ensure t))
 
 ;; Native-comp
 (when (and (fboundp 'native-comp-available-p) (native-comp-available-p))
