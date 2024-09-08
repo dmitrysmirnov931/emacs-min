@@ -6,11 +6,6 @@
 (global-hl-line-mode t)
 (column-number-mode t)
 
-(require-theme 'modus-themes)
-(setq modus-themes-bold-constructs t
-      modus-themes-italic-constructs t)
-(load-theme 'modus-operandi-tinted)
-
 (setq show-paren-delay 0)
 (show-paren-mode t)
 
@@ -47,6 +42,11 @@
 
 (use-package no-littering
   :ensure t)
+
+(use-package gruvbox-theme
+  :ensure t
+  :config
+  (load-theme 'gruvbox-dark-medium t))
 
 (use-package evil
   :ensure t

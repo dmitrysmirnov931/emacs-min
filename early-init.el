@@ -1,5 +1,5 @@
 ;;; -*- lexical-binding: t -*-
-(set-face-attribute 'default nil :family "Iosevka" :height 150 :weight 'normal)
+(set-face-attribute 'default nil :family "JetBrains Mono" :height 150 :weight 'normal)
 
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
