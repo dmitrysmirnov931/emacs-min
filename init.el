@@ -5,7 +5,11 @@
 (which-key-mode t)
 (global-hl-line-mode t)
 (column-number-mode t)
-(global-completion-preview-mode t)
+
+(require-theme 'modus-themes)
+(setq modus-themes-bold-constructs t
+      modus-themes-italic-constructs t)
+(load-theme 'modus-operandi-tinted)
 
 (setq show-paren-delay 0)
 (show-paren-mode t)
@@ -201,6 +205,23 @@
   :ensure t
   :bind ("C-x g" . magit-status)
   :config (add-hook 'with-editor-mode-hook #'evil-insert-state))
+
+(use-package org-tempo)
+
+(use-package org-roam
+  :ensure t
+  :init
+  (setq org-roam-v2-ack t)
+  :config
+  (setq org-roam-directory "~/org/pentest")
+  (org-roam-db-autosync-mode)
+  (setq org-roam-capture-templates
+   '(("w" "writeup" plain
+      "\n\n* Enumeration\n\n* Exploitation\n\n* Privilege escalation\n"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :writeup:")
+      :unnarrowed t)))
+  (org-roam-setup)
+  )
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (put 'narrow-to-region 'disabled nil)

@@ -2,6 +2,7 @@ config.el
 custom.el
 auto-save-list/
 elpa/
+eln-cache/
 etc/
 var/
 saves/
