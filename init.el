@@ -211,7 +211,6 @@
 (use-package org-roam
   :ensure t
   :init
-  (setq org-roam-v2-ack t)
   :config
   (setq org-roam-directory "~/org/pentest")
   (org-roam-db-autosync-mode)
@@ -219,9 +218,7 @@
    '(("w" "writeup" plain
       "\n\n* Enumeration\n\n* Exploitation\n\n* Privilege escalation\n"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :writeup:")
-      :unnarrowed t)))
-  (org-roam-setup)
-  )
+      :unnarrowed t))))
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (put 'narrow-to-region 'disabled nil)
