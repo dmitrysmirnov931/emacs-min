@@ -9,10 +9,6 @@
 (setq show-paren-delay 0)
 (show-paren-mode t)
 
-(setq ido-enable-flex-matching t
-      ido-everywhere t)
-(ido-mode t)
-
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)
   (load custom-file))
@@ -32,7 +28,6 @@
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
 (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
-(setq-default mode-line-format (delete '(vc-mode vc-mode) mode-line-format))
 
 (setq backup-directory-alist `(("." . "~/.config/emacs/saves"))
       delete-old-versions t
@@ -85,6 +80,14 @@
   :after evil
   :ensure t
   :config (evil-commentary-mode t))
+
+(use-package evil-escape
+  :after evil
+  :ensure t
+  :config
+  (setq-default evil-escape-key-sequence "jk")
+  (setq-default evil-escape-delay 0.1)
+  (evil-escape-mode))
 
 (use-package affe
   :ensure t
@@ -168,6 +171,14 @@
         vertico-cycle t)
   :init
   (vertico-mode))
+
+(use-package vertico-directory
+  :after vertico-map
+  :bind (:map vertico-map
+	      ("RET" . vertico-directory-enter)
+	      ("DEL" . vertico-directory-delete-char)
+	      ("M-DEL" . vertico-directory-delete-word))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package corfu
   :ensure t

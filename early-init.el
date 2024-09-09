@@ -1,5 +1,18 @@
 ;;; -*- lexical-binding: t -*-
-(set-face-attribute 'default nil :family "JetBrains Mono" :height 150 :weight 'normal)
+(set-face-attribute 'default nil :family "Fira Code" :height 170 :weight 'normal)
+
+
+(defvar my-gc-cons-threshold (* 16 1024 1024)
+  "The value of 'gc-cons-threshold' after Emacs startup")
+(setq gc-cons-threshold most-positive-fixnum)
+(add-hook 'emacs-startup-hook
+	  (lambda ()
+	    (setq gc-cons-threshold my-gc-cons-threshold)))
+(setq read-process-output-max (* 256 1024))
+(setq which-func-update-delay 1.0)
+
+(setq use-file-dialog nil)
+(setq use-dialog-box nil)
 
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
