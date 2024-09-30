@@ -38,10 +38,10 @@
 (use-package no-littering
   :ensure t)
 
-(use-package gruvbox-theme
+(use-package standard-themes
   :ensure t
   :config
-  (load-theme 'gruvbox-dark-medium t))
+  (load-theme 'standard-dark t))
 
 (use-package evil
   :ensure t
@@ -89,6 +89,10 @@
   (setq-default evil-escape-delay 0.1)
   (evil-escape-mode))
 
+(use-package expand-region
+  :ensure t
+  :bind ("C-=" . er/expand-region))
+
 (use-package affe
   :ensure t
   :config
@@ -132,6 +136,24 @@
    consult--source-recent-file consult--source-project-recent-file
    :preview-key '(:debounce 0.4 any))
   (setq consult-narrow-key "<"))
+
+(use-package embark
+  :ensure t
+  :bind
+  (("C-." . embark-act)
+   ("C-;" . embark-dwim)
+   ("C-h B" . embark-bindings))
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult
+  :ensure t 
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package orderless
   :ensure t
@@ -216,6 +238,10 @@
   :ensure t
   :bind ("C-x g" . magit-status)
   :config (add-hook 'with-editor-mode-hook #'evil-insert-state))
+
+(use-package diff-hl
+  :ensure t
+  :config (global-diff-hl-mode))
 
 (use-package org-tempo)
 
