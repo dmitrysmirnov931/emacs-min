@@ -220,7 +220,8 @@
   :hook ((( python-mode python-ts-mode ) . eglot-ensure))
   :config
   (setq completion-category-overrides '((eglot (styles orderless))))
-  (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("pyright-langserver" "--stdio")))
+  ;; (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("pyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio" "--verbose")))
   ;; (add-to-list 'eglot-ignored-server-capabilities :hoverProvider)
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (setq eglot-autoshutdown t
