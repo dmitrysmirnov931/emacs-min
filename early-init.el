@@ -1,5 +1,5 @@
 ;;; -*- lexical-binding: t -*-
-(set-face-attribute 'default nil :family "JetBrains Mono" :height 130 :weight 'normal)
+(set-face-attribute 'default nil :family "Iosevka" :height 170 :weight 'normal)
 
 
 (defvar my-gc-cons-threshold (* 16 1024 1024)

@@ -1,8 +1,10 @@
 config.el
 custom.el
+projects
 auto-save-list/
 elpa/
 eln-cache/
 etc/
 var/
 saves/
+transient/
