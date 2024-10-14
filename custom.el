@@ -8,6 +8,7 @@
    '("8f552d57608edf3dcc58136d7fa87d8490ddc6e2676fe9c84ba9ba6455cc4caa"
      "8f5b54bf6a36fe1c138219960dd324aad8ab1f62f543bed73ef5ad60956e36ae"
      default))
+ '(font-lock-maximum-decoration t)
  '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -20,10 +21,10 @@
  '(header-line-highlight ((t :box (:color "#f0f6f0"))))
  '(keycast-key ((t)))
  '(line-number ((t :background "#222323")))
- '(mode-line ((t :background "#222323" :overline "#f0f6f0" :box (:line-width 6 :color "#222323" :style nil))))
+ '(mode-line ((t :background "#2a2a29" :overline "#e8e5db" :box (:line-width 4 :color "#2a2a29" :style nil))))
  '(mode-line-active ((t :background "#222323" :overline "#f0f6f0" :box (:line-width 6 :color "#222323" :style nil))))
  '(mode-line-highlight ((t :box (:color "#f0f6f0"))))
- '(mode-line-inactive ((t :background "#222323" :overline "#f0f6f0" :box (:line-width 6 :color "#222323" :style nil))))
+ '(mode-line-inactive ((t :background "#2a2a29" :overline "#2a2a29" :box (:line-width 4 :color "#2a2a29" :style nil))))
  '(tab-bar-tab ((t :box (:line-width 4 :color "grey" :style nil))))
  '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "grey" :style nil))))
  '(tab-line-tab ((t)))

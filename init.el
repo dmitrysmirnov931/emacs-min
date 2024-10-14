@@ -50,6 +50,7 @@
 
   (global-set-key (kbd "C-,") 'my-duplicate-line)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "C-x C-x") 'kill-current-buffer)
 
   (put 'narrow-to-region 'disabled nil))
 
@@ -57,10 +58,20 @@
 (use-package no-littering
   :ensure t)
 
+;; (use-package ef-themes
+;;   :ensure t
+;;   :config
+;;   (load-theme 'ef-day t))
+;; (use-package catppuccin-theme
+;;   :ensure t
+;;   :config
+;;   (setq catppuccin-flavor 'latte)
+;;   (load-theme 'catppuccin t))
 (use-package base16-theme
-  :ensure
+  :ensure t
   :config
-  (load-theme 'base16-sandcastle t))
+  (setq base16-theme-256-color-source 'colors)
+  (load-theme 'base16-rose-pine-dawn t))
 
 (use-package evil
   :ensure t
@@ -137,6 +148,7 @@
   :config
   (setq corfu-cycle t
         corfu-auto t
+	corfu-auto-delay 0.5
         corfu-separtor ?\s)
   :init
   (global-corfu-mode))
@@ -209,8 +221,8 @@
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil))
 
-(use-package eldoc-box
-  :ensure t)
+;; (use-package eldoc-box
+;;   :ensure t)
 
 (use-package eglot
   :ensure t
@@ -220,10 +232,9 @@
   :hook ((( python-mode python-ts-mode ) . eglot-ensure))
   :config
   (setq completion-category-overrides '((eglot (styles orderless))))
-  ;; (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("pyright-langserver" "--stdio")))
   (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio" "--verbose")))
   ;; (add-to-list 'eglot-ignored-server-capabilities :hoverProvider)
-  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
+  ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (setq eglot-autoshutdown t
         eglot-events-buffer-size 0
         eldoc-echo-area-use-multiline-p nil))
@@ -247,7 +258,7 @@
 (use-package avy
   :ensure t
   :bind
-  (("s-j" . avy-goto-char-timer))
+  (("C-c j" . avy-goto-char-timer))
   :config
   (setq avy-all-windows 'all-frames))
 

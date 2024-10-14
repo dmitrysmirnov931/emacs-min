@@ -7,3 +7,4 @@ etc/
 var/
 saves/
 transient/
+tree-sitter/
