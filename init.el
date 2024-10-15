@@ -1,41 +1,37 @@
 ;;; -*- lexical-binding: t -*-
 (use-package emacs
-  :config
+  :init
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (which-key-mode t)
   (global-hl-line-mode t)
   (column-number-mode t)
-
-  (setq show-paren-delay 0)
   (show-paren-mode t)
-  (setq custom-file (concat user-emacs-directory "custom.el"))
+  :custom
+  (show-paren-delay 0)
+  (custom-file (concat user-emacs-directory "custom.el"))
+  (ring-bell-function 'ignore)
+  (frame-resize-pixelwise t)
+  (use-short-answers t)
+  (inhibit-startup-screen t)
+  (enable-recursive-minibuffers t)
+  (scroll-margin 0)
+  (scroll-conservatively 101)
+  (scroll-preserve-screen-position t)
+  (auto-window-vscroll nil)
+  (minibuffer-prompt-properties
+	'(read-only t cursor-intangible t face minibuffer-prompt))
+  (flymake-fringe-indicator-position 'right-fringe)
+  (backup-directory-alist `(("." . "~/.config/emacs/saves")))
+  (delete-old-versions t)
+  (kept-new-versions 6)
+  (kept-old-versions 2)
+  (version-control t)
+  :config
   (when (file-exists-p custom-file)
     (load custom-file))
-
-  (setq ring-bell-function 'ignore)
-  (setq frame-resize-pixelwise t)
-  (setq use-short-answers t)
-  (setq inhibit-startup-screen t)
-  (setq enable-recursive-minibuffers t)
-  (setq scroll-margin 0
-	scroll-conservatively 101
-	scroll-preserve-screen-position t
-	auto-window-vscroll nil)
-
-  (setq minibuffer-prompt-properties
-	'(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-  (setq flymake-fringe-indicator-position 'right-fringe)
-
-  (setq backup-directory-alist `(("." . "~/.config/emacs/saves"))
-	delete-old-versions t
-	kept-new-versions 6
-	kept-old-versions 2
-	version-control t)
-
   (defun my-duplicate-line ()
     "Duplicate current line"
     (interactive)
@@ -54,37 +50,43 @@
 
   (put 'narrow-to-region 'disabled nil))
 
+(use-package dired
+  :custom
+  (dired-listing-switches "-lah --group-directories-first")
+  (dired-dwim-target t)
+  (dired-kill-when-opening-new-dired-buffer t))
+
+(use-package isearch
+  :custom
+  (isearch-lazy-count t)
+  (lazy-count-prefix-format "(%s/%s) ")
+  (lazy-count-suffix-format nil)
+  (search-whitespace-regexp ".*?"))
 
 (use-package no-littering
   :ensure t)
 
-;; (use-package ef-themes
-;;   :ensure t
-;;   :config
-;;   (load-theme 'ef-day t))
-;; (use-package catppuccin-theme
-;;   :ensure t
-;;   :config
-;;   (setq catppuccin-flavor 'latte)
-;;   (load-theme 'catppuccin t))
 (use-package base16-theme
   :ensure t
+  :custom
+  (base16-theme-256-color-source 'colors)
   :config
-  (setq base16-theme-256-color-source 'colors)
   (load-theme 'base16-rose-pine-dawn t))
 
 (use-package evil
   :ensure t
-  :init
-  (setq evil-want-integration t
-        evil-want-keybinding nil
-        evil-want-C-u-scroll t
-        evil-split-window-below t
-        evil-vsplit-window-right t
-        evil-want-Y-yank-to-eol t
-        evil-respect-visual-line-mode t
-	evil-undo-system 'undo-fu
-        evil-mode-line-format nil)
+  :defer t
+  :custom
+  (evil-want-integration t)
+  (evil-want-keybinding nil)
+  (evil-want-C-u-scroll t)
+  (evil-split-window-below t)
+  (evil-vsplit-window-right t)
+  (evil-want-Y-yank-to-eol t)
+  (evil-respect-visual-line-mode t)
+  (evil-undo-system 'undo-fu)
+  (evil-mode-line-format nil)
+  (evil-want-fine-undo t)
   :hook (after-init . evil-mode)
   :preface
   (defun my-save-and-kill-this-buffer ()
@@ -101,41 +103,42 @@
   (evil-ex-define-cmd "wq" #'my-save-and-kill-this-buffer))
 
 (use-package undo-fu
+  :defer t
   :ensure t)
 
 (use-package evil-collection
   :ensure t
+  :defer t
   :after evil
-  :config
-  (setq evil-collection-setup-minibuffer t)
-  (evil-collection-init))
+  :hook (evil-mode . evil-collection-init)
+  :custom
+  (evil-collection-setup-minibuffer t))
 
 (use-package evil-commentary
   :after evil
   :ensure t
-  :config (evil-commentary-mode t))
+  :defer t
+  :hook (evil-mode . evil-commentary-mode))
 
 (use-package evil-escape
   :after evil
   :ensure t
-  :config
-  (setq-default evil-escape-key-sequence "jk")
-  (setq-default evil-escape-delay 0.1)
-  (evil-escape-mode))
-
-(use-package expand-region
-  :ensure t
-  :bind ("C-=" . er/expand-region))
+  :defer t
+  :hook (evil-mode . evil-escape-mode)
+  :custom
+  (evil-escape-key-sequence "jk")
+  (evil-escape-delay 0.1))
 
 (use-package vertico
   :ensure t
-  :config
-  (setq vertico-count 10
-        vertico-cycle t)
-  :init
-  (vertico-mode))
+  :defer t
+  :hook (after-init . vertico-mode)
+  :custom
+  (vertico-count 10)
+  (vertico-cycle t))
 
 (use-package vertico-directory
+  :defer t
   :after vertico-map
   :bind (:map vertico-map
 	      ("RET" . vertico-directory-enter)
@@ -145,13 +148,13 @@
 
 (use-package corfu
   :ensure t
-  :config
-  (setq corfu-cycle t
-        corfu-auto t
-	corfu-auto-delay 0.5
-        corfu-separtor ?\s)
-  :init
-  (global-corfu-mode))
+  :defer t
+  :hook (after-init . global-corfu-mode)
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t)
+  (corfu-auto-delay 0.5)
+  (corfu-separtor ?\s))
 
 (use-package affe
   :ensure t
@@ -163,6 +166,7 @@
 
 (use-package consult
   :ensure t
+  :defer t
   :bind (("C-c M-x" . consult-mode-command)
          ([remap Info-search] . consult-info)
          ("C-x b" . consult-buffer)
@@ -181,12 +185,14 @@
          ("M-s l" . consult-line)
          ("M-s L" . consult-line-multi))
   :hook (completion-list-mode . consult-preview-at-point-mode)
+  :custom
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref)
+  (consult-narrow-key "<")
   :init
   ;; This adds thin lines, sorting and hides the mode line of the window.
   (advice-add #'register-preview :override #'consult-register-window)
   ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
   :config
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
@@ -194,11 +200,11 @@
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-file-register
    consult--source-recent-file consult--source-project-recent-file
-   :preview-key '(:debounce 0.4 any))
-  (setq consult-narrow-key "<"))
+   :preview-key '(:debounce 0.4 any)))
 
 (use-package embark
   :ensure t
+  :defer t
   :bind
   (("C-." . embark-act)
    ("C-;" . embark-dwim)
@@ -212,17 +218,16 @@
 
 (use-package embark-consult
   :ensure t 
+  :defer t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package orderless
   :ensure t
-  :config
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil))
-
-;; (use-package eldoc-box
-;;   :ensure t)
+  :defer t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil))
 
 (use-package eglot
   :ensure t
@@ -230,14 +235,22 @@
               ("C-c r" . eglot-rename)
               ("C-c R" . xref-find-references))
   :hook ((( python-mode python-ts-mode ) . eglot-ensure))
+  :custom
+  (completion-category-overrides '((eglot (styles orderless))))
+  (eglot-autoshutdown t)
+  (eglot-events-buffer-size 0)
+  (eldoc-echo-area-use-multiline-p nil)
+  (eglot-ignored-server-capabilities
+   '(:hoverProvider
+     :inlayHintProvider
+     :documentHighlightProvider
+     :documentFormattingProvider
+     :documentRangeFormattingProvider
+     :documentOnTypeFormattingProvider
+     :colorProvider
+     :foldingRangeProvider))
   :config
-  (setq completion-category-overrides '((eglot (styles orderless))))
-  (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio" "--verbose")))
-  ;; (add-to-list 'eglot-ignored-server-capabilities :hoverProvider)
-  ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
-  (setq eglot-autoshutdown t
-        eglot-events-buffer-size 0
-        eldoc-echo-area-use-multiline-p nil))
+  (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio" "--verbose"))))
 
 (use-package consult-eglot
   :ensure t
@@ -247,20 +260,20 @@
 
 (use-package marginalia
   :ensure t
-  :init
-  (marginalia-mode))
+  :defer t
+  :hook (after-init . marginalia-mode))
 
-(use-package breadcrumb
-  :ensure t
-  :config
-  (breadcrumb-mode t))
+;; (use-package breadcrumb
+;;   :ensure t
+;;   :defer t
+;;   :hook (after-init . breadcrumb-mode))
 
 (use-package avy
   :ensure t
   :bind
-  (("C-c j" . avy-goto-char-timer))
-  :config
-  (setq avy-all-windows 'all-frames))
+  (("s-j" . avy-goto-char-timer))
+  :custom
+  (avy-all-windows 'all-frames))
 
 (use-package magit
   :ensure t
@@ -269,25 +282,37 @@
 
 (use-package diff-hl
   :ensure t
-  :config (global-diff-hl-mode))
+  :defer t
+  :hook (find-file . (lambda ()
+		       (global-diff-hl-mode)
+		       (diff-hl-flydiff-mode)
+		       (diff-hl-margin-mode)))
+  :custom
+  (diff-hl-side 'left)
+  (diff-hl-margin-symbols-alist '((insert . "|")
+				  (delete . "-")
+				  (change . "|")
+				  (unknown . "?")
+				  (ingored . "i"))))
 
 (use-package spacious-padding
   :ensure t
-  :config
-  (setq spacious-padding-widths
-	'(
-	  :internal-border-width 15
-	  :header-line-width 4
-	  :mode-line-width 4
-	  :tab-width 4
-	  :right-divider-width 30
-	  :scroll-bar-width 8
-	  :fringe-width 8)
-	spacious-padding-subtle-mode-line
-	'(
-	  :mode-line-active 'default
-	  :mode-line-inactive vertical-border))
-  (spacious-padding-mode 1))
+  :defer t
+  :hook (after-init . spacious-padding-mode)
+  :custom
+  (spacious-padding-widths
+   '(
+     :internal-border-width 15
+     :header-line-width 4
+     :mode-line-width 4
+     :tab-width 4
+     :right-divider-width 30
+     :scroll-bar-width 8
+     :fringe-width 8))
+  (spacious-padding-subtle-mode-line
+   '(
+     :mode-line-active 'default
+     :mode-line-inactive vertical-border)))
 
 (use-package multiple-cursors
   :ensure t

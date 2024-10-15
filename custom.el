@@ -9,7 +9,12 @@
      "8f5b54bf6a36fe1c138219960dd324aad8ab1f62f543bed73ef5ad60956e36ae"
      default))
  '(font-lock-maximum-decoration t)
- '(package-selected-packages nil))
+ '(package-selected-packages
+   '(affe autothemer avy base16-theme consult-eglot corfu diff-hl emacsql
+	  embark-consult evil-collection evil-commentary evil-escape
+	  expand-region magit marginalia modus-themes multiple-cursors
+	  no-littering orderless pyvenv s spacious-padding undo-fu
+	  vertico zenburn-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
