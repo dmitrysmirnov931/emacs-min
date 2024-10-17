@@ -8,6 +8,7 @@
   (global-hl-line-mode t)
   (column-number-mode t)
   (show-paren-mode t)
+  (global-auto-revert-mode t)
   :custom
   (show-paren-delay 0)
   (custom-file (concat user-emacs-directory "custom.el"))
@@ -158,11 +159,16 @@
 
 (use-package affe
   :ensure t
+  :defer t
   :config
   (defun affe-orderless-regexp-compiler (input _type _ignorecase)
     (setq input (cdr (orderless-compile input)))
     (cons input (apply-partially #'orderless--highlight input t)))
   (setq affe-regexp-compiler #'affe-orderless-regexp-compiler))
+
+(use-package wgrep
+  :ensure t
+  :defer t)
 
 (use-package consult
   :ensure t
@@ -206,9 +212,7 @@
   :ensure t
   :defer t
   :bind
-  (("C-." . embark-act)
-   ("C-;" . embark-dwim)
-   ("C-h B" . embark-bindings))
+  (("s-." . embark-act))
   :config
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
@@ -262,11 +266,6 @@
   :ensure t
   :defer t
   :hook (after-init . marginalia-mode))
-
-;; (use-package breadcrumb
-;;   :ensure t
-;;   :defer t
-;;   :hook (after-init . breadcrumb-mode))
 
 (use-package avy
   :ensure t
