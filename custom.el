@@ -10,11 +10,12 @@
      default))
  '(font-lock-maximum-decoration t)
  '(package-selected-packages
-   '(affe autothemer avy base16-theme consult-eglot corfu diff-hl emacsql
-	  embark-consult evil-collection evil-commentary evil-escape
-	  expand-region magit marginalia modus-themes multiple-cursors
-	  no-littering orderless pyvenv s spacious-padding undo-fu
-	  vertico wgrep zenburn-theme)))
+   '(ace-window affe autothemer consult-eglot corfu diff-hl diminish
+		emacsql embark-consult evil-collection evil-commentary
+		evil-escape expand-region kuronami-theme magit
+		marginalia modus-themes multiple-cursors no-littering
+		orderless pyvenv s spacious-padding undo-fu vertico
+		wgrep zenburn-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

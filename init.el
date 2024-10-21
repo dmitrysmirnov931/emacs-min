@@ -67,12 +67,22 @@
 (use-package no-littering
   :ensure t)
 
-(use-package base16-theme
+(use-package diminish
   :ensure t
-  :custom
-  (base16-theme-256-color-source 'colors)
   :config
-  (load-theme 'base16-rose-pine-dawn t))
+  (diminish 'which-key-mode)
+  (diminish 'eldoc-mode))
+
+;; (use-package kuronami-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'kuronami t))
+
+(use-package modus-themes
+  :ensure t
+  :config
+  (setq modus-themes-italic-constructs t)
+  (load-theme 'modus-vivendi t))
 
 (use-package evil
   :ensure t
@@ -109,20 +119,24 @@
 
 (use-package evil-collection
   :ensure t
+  :diminish evil-collection-unimpaired-mode
   :defer t
   :after evil
   :hook (evil-mode . evil-collection-init)
   :custom
-  (evil-collection-setup-minibuffer t))
+  (evil-collection-setup-minibuffer t)
+  (evil-collection-want-unimpaired-p nil))
 
 (use-package evil-commentary
   :after evil
+  :diminish evil-commentary-mode
   :ensure t
   :defer t
   :hook (evil-mode . evil-commentary-mode))
 
 (use-package evil-escape
   :after evil
+  :diminish evil-escape-mode
   :ensure t
   :defer t
   :hook (evil-mode . evil-escape-mode)
@@ -140,7 +154,7 @@
 
 (use-package vertico-directory
   :defer t
-  :after vertico-map
+  :after vertico
   :bind (:map vertico-map
 	      ("RET" . vertico-directory-enter)
 	      ("DEL" . vertico-directory-delete-char)
@@ -269,6 +283,7 @@
 
 (use-package avy
   :ensure t
+  :defer t
   :bind
   (("s-j" . avy-goto-char-timer))
   :custom
@@ -276,8 +291,17 @@
 
 (use-package magit
   :ensure t
+  :defer t
   :bind ("C-x g" . magit-status)
   :config (add-hook 'with-editor-mode-hook #'evil-insert-state))
+
+(use-package ace-window
+  :ensure t
+  :defer t
+  :bind (("s-o" . ace-window)
+	 ("s-p" . ace-delete-other-windows))
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (use-package diff-hl
   :ensure t
@@ -287,12 +311,7 @@
 		       (diff-hl-flydiff-mode)
 		       (diff-hl-margin-mode)))
   :custom
-  (diff-hl-side 'left)
-  (diff-hl-margin-symbols-alist '((insert . "|")
-				  (delete . "-")
-				  (change . "|")
-				  (unknown . "?")
-				  (ingored . "i"))))
+  (diff-hl-side 'left))
 
 (use-package spacious-padding
   :ensure t
@@ -312,13 +331,5 @@
    '(
      :mode-line-active 'default
      :mode-line-inactive vertical-border)))
-
-(use-package multiple-cursors
-  :ensure t
-  :bind (("C-s-c C-s-c" . mc/edit-lines)
-	 ("C->"         . mc/mark-next-like-this)
-	 ("C-<"         . mc/mark-previous-like-this)
-	 ("C-c C-<"         . mc/mark-next-like-this)))
-
 
 ;; (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))

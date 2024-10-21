@@ -1,5 +1,5 @@
 ;;; -*- lexical-binding: t -*-
-(set-face-attribute 'default nil :family "Fira Code Retina" :height 150 :weight 'normal)
+(set-face-attribute 'default nil :family "Iosevka" :height 210 :weight 'normal)
 
 (defvar my-gc-cons-threshold (* 16 1024 1024)
   "The value of 'gc-cons-threshold' after Emacs startup")
