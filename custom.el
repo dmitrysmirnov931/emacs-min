@@ -10,33 +10,34 @@
      default))
  '(font-lock-maximum-decoration t)
  '(package-selected-packages
-   '(ace-window affe autothemer consult-eglot corfu diff-hl diminish
-		emacsql embark-consult evil-collection evil-commentary
-		evil-escape expand-region kuronami-theme magit
-		marginalia modus-themes multiple-cursors no-littering
-		orderless pyvenv s spacious-padding undo-fu vertico
-		wgrep zenburn-theme)))
+   '(ace-window affe autothemer consult-eglot corfu denote diff-hl
+		diminish emacsql embark-consult evil-collection
+		evil-commentary evil-escape expand-region
+		gruber-darker-theme kuronami-theme magit marginalia
+		modus-themes multiple-cursors no-littering orderless
+		pyvenv s spacious-padding undo-fu vertico
+		vi-tilde-fringe wgrep zenburn-theme zig-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(eglot-inlay-hint-face ((t (:inherit shadow :slant italic :height 1.0 :family "Iosevka"))))
- '(fringe ((t :background "#222323")))
- '(header-line ((t :box (:line-width 4 :color "#222323" :style nil))))
+ '(fringe ((t :background "#ffffff")))
+ '(header-line ((t :box (:line-width 4 :color "#efefef" :style nil))))
  '(header-line-highlight ((t :box (:color "#f0f6f0"))))
  '(keycast-key ((t)))
- '(line-number ((t :background "#222323")))
- '(mode-line ((t :background "#2a2a29" :overline "#e8e5db" :box (:line-width 4 :color "#2a2a29" :style nil))))
+ '(line-number ((t :background "#ffffff")))
+ '(mode-line ((t :background "#ffffff" :overline "#4d4d4c" :box (:line-width 4 :color "#ffffff" :style nil))))
  '(mode-line-active ((t :background "#222323" :overline "#f0f6f0" :box (:line-width 6 :color "#222323" :style nil))))
- '(mode-line-highlight ((t :box (:color "#f0f6f0"))))
- '(mode-line-inactive ((t :background "#2a2a29" :overline "#2a2a29" :box (:line-width 4 :color "#2a2a29" :style nil))))
- '(tab-bar-tab ((t :box (:line-width 4 :color "grey" :style nil))))
- '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "grey" :style nil))))
+ '(mode-line-highlight ((t :box (:color "#4d4d4c"))))
+ '(mode-line-inactive ((t :background "#ffffff" :overline "#d6d6d6" :box (:line-width 4 :color "#ffffff" :style nil))))
+ '(tab-bar-tab ((t :box (:line-width 4 :color "#d6d6d6" :style nil))))
+ '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "#8e908c" :style nil))))
  '(tab-line-tab ((t)))
  '(tab-line-tab-active ((t)))
  '(tab-line-tab-inactive ((t)))
- '(vertical-border ((t :background "#222323" :foreground "#222323")))
- '(window-divider ((t (:background "#222323" :foreground "#222323"))))
- '(window-divider-first-pixel ((t (:background "#222323" :foreground "#222323"))))
- '(window-divider-last-pixel ((t (:background "#222323" :foreground "#222323")))))
+ '(vertical-border ((t :background "#ffffff" :foreground "#ffffff")))
+ '(window-divider ((t (:background "#ffffff" :foreground "#ffffff"))))
+ '(window-divider-first-pixel ((t (:background "#ffffff" :foreground "#ffffff"))))
+ '(window-divider-last-pixel ((t (:background "#ffffff" :foreground "#ffffff")))))

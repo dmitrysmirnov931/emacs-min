@@ -4,11 +4,14 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
+  (line-number-mode -1)
+  (electric-pair-mode t)
   (which-key-mode t)
-  (global-hl-line-mode t)
-  (column-number-mode t)
+  ;; (column-number-mode t)
   (show-paren-mode t)
   (global-auto-revert-mode t)
+  (global-display-line-numbers-mode t)
+  ;; (global-hl-line-mode t)
   :custom
   (show-paren-delay 0)
   (custom-file (concat user-emacs-directory "custom.el"))
@@ -17,19 +20,14 @@
   (use-short-answers t)
   (inhibit-startup-screen t)
   (enable-recursive-minibuffers t)
-  (scroll-margin 0)
-  (scroll-conservatively 101)
-  (scroll-preserve-screen-position t)
-  (auto-window-vscroll nil)
   (minibuffer-prompt-properties
 	'(read-only t cursor-intangible t face minibuffer-prompt))
   (flymake-fringe-indicator-position 'right-fringe)
-  (backup-directory-alist `(("." . "~/.config/emacs/saves")))
-  (delete-old-versions t)
-  (kept-new-versions 6)
-  (kept-old-versions 2)
-  (version-control t)
+  (compilation-scroll-output t)
+  (compilation-always-kill t)
+  (display-line-numbers-type 'visual)
   :config
+  (setq-default )
   (when (file-exists-p custom-file)
     (load custom-file))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
@@ -51,6 +49,26 @@
 
   (put 'narrow-to-region 'disabled nil))
 
+(use-package vc
+  :custom
+  (version-control t)
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (vc-annotate-display-mode 'scale))
+
+(use-package backups
+  :custom
+  (backup-directory-alist `(("." . "~/.config/emacs/saves")))
+  (delete-old-versions t)
+  (kept-new-versions 6)
+  (kept-old-versions 2))
+
+(use-package scrolling
+  :custom
+  (scroll-margin 0)
+  (scroll-conservatively 101)
+  (scroll-preserve-screen-position t)
+  (auto-window-vscroll nil))
+
 (use-package dired
   :custom
   (dired-listing-switches "-lah --group-directories-first")
@@ -64,8 +82,7 @@
   (lazy-count-suffix-format nil)
   (search-whitespace-regexp ".*?"))
 
-(use-package no-littering
-  :ensure t)
+(use-package no-littering :ensure t)
 
 (use-package diminish
   :ensure t
@@ -73,16 +90,49 @@
   (diminish 'which-key-mode)
   (diminish 'eldoc-mode))
 
-;; (use-package kuronami-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'kuronami t))
-
-(use-package modus-themes
+(use-package kuronami-theme
   :ensure t
   :config
-  (setq modus-themes-italic-constructs t)
-  (load-theme 'modus-vivendi t))
+  (load-theme 'kuronami t))
+
+;; (use-package modus-themes
+;;   :ensure t
+;;   :config
+;;   (setq modus-themes-italic-constructs t)
+;;   (load-theme 'modus-vivendi t))
+
+(use-package diff-hl
+  :ensure t
+  :defer t
+  :hook ((find-file . global-diff-hl-mode)
+	 (find-file . diff-hl-flydiff-mode)
+	 (find-file . diff-hl-margin-mode))
+  :custom
+  (diff-hl-side 'left))
+
+(use-package spacious-padding
+  :ensure t
+  :defer t
+  :hook (after-init . spacious-padding-mode)
+  :custom
+  (spacious-padding-widths
+   '(
+     :internal-border-width 15
+     :header-line-width 4
+     :mode-line-width 4
+     :tab-width 4
+     :right-divider-width 30
+     :scroll-bar-width 8
+     :fringe-width 8))
+  (spacious-padding-subtle-mode-line
+   '(
+     :mode-line-active 'default
+     :mode-line-inactive vertical-border)))
+
+(use-package vi-tilde-fringe
+  :ensure t
+  :defer t
+  :hook (prog-mode-hook . vi-tilde-fringe-mode))
 
 (use-package evil
   :ensure t
@@ -192,13 +242,10 @@
          ("C-x b" . consult-buffer)
          ("C-x r b" . consult-bookmark)
 	 ("C-x p b" . consult-project-buffer)
-         ("M-g g" . consult-goto-line)
-	 ("M-g M-g" . consult-goto-line)
          ("M-g o" . consult-outline)
          ("M-g i" . consult-imenu)
          ("M-g I" . consult-imenu-multi)
          ("M-s d" . affe-find)
-         ("M-s c" . consult-locate)
          ("M-s g" . affe-grep)
          ("M-s G" . consult-git-grep)
          ("M-s r" . consult-ripgrep)
@@ -247,12 +294,18 @@
   (completion-styles '(orderless basic))
   (completion-category-defaults nil))
 
+(use-package zig-mode
+  :ensure t
+  :defer t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.zig\\'" . zig-mode)))
+
 (use-package eglot
   :ensure t
   :bind (:map eglot-mode-map
               ("C-c r" . eglot-rename)
               ("C-c R" . xref-find-references))
-  :hook ((( python-mode python-ts-mode ) . eglot-ensure))
+  :hook ((( python-mode python-ts-mode csharp-mode csharp-ts-mode zig-mode ) . eglot-ensure))
   :custom
   (completion-category-overrides '((eglot (styles orderless))))
   (eglot-autoshutdown t)
@@ -265,10 +318,11 @@
      :documentFormattingProvider
      :documentRangeFormattingProvider
      :documentOnTypeFormattingProvider
-     :colorProvider
-     :foldingRangeProvider))
+     :colorProvider))
   :config
-  (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio" "--verbose"))))
+  (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio" "--verbose")))
+  (add-to-list 'eglot-server-programs '((csharp-mode csharp-ts-mode) . ("dotnet" "~/omnisharp/OmniSharp.dll" "-lsp")))
+  (add-to-list 'eglot-server-programs '((zig-mode zig-ts-mode)       . ("zls"))))
 
 (use-package consult-eglot
   :ensure t
@@ -292,6 +346,8 @@
 (use-package magit
   :ensure t
   :defer t
+  :custom
+  (magit-diff-refine-hunk t)
   :bind ("C-x g" . magit-status)
   :config (add-hook 'with-editor-mode-hook #'evil-insert-state))
 
@@ -303,33 +359,34 @@
   :custom
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-(use-package diff-hl
-  :ensure t
-  :defer t
-  :hook (find-file . (lambda ()
-		       (global-diff-hl-mode)
-		       (diff-hl-flydiff-mode)
-		       (diff-hl-margin-mode)))
-  :custom
-  (diff-hl-side 'left))
 
-(use-package spacious-padding
+(use-package denote
   :ensure t
   :defer t
-  :hook (after-init . spacious-padding-mode)
+  :bind (("C-c n n" . denote)
+	 ("C-c n c" . denote-region))
   :custom
-  (spacious-padding-widths
-   '(
-     :internal-border-width 15
-     :header-line-width 4
-     :mode-line-width 4
-     :tab-width 4
-     :right-divider-width 30
-     :scroll-bar-width 8
-     :fringe-width 8))
-  (spacious-padding-subtle-mode-line
-   '(
-     :mode-line-active 'default
-     :mode-line-inactive vertical-border)))
+  (denote-directory (expand-file-name "~/org/denote/"))
+  (denote-save-buffers nil)
+  (denote-known-keywords '("work" "read"))
+  (denote-infer-keywords t)
+  (denote-soft-keywords t)
+  (denote-prompts '(title keywords))
+  (denote-rename-confirmations '(rewrite-fron-matter modify-file-name))
+  (denote-date-prompt-use-org-read-date t)
+  (denote-date-format nil)
+  (denote-backlinks-show-context t)
+  :config
+  (denote-rename-buffer-mode 1)
+  (with-eval-after-load 'org-capture
+    (setq denote-org-capture-specifiers "%l\n%i\n%?")
+    (add-to-list 'org-capture-templates
+		 '("n" "New note (with denote.el)" plain
+		   (file denote-last-path)
+		   #'denote-org-capture
+		   :no-save t
+		   :immediate-finish nil
+		   :kill-buffer t
+		   :jump-to-captured t))))
 
 ;; (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
