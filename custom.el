@@ -11,12 +11,13 @@
  '(font-lock-maximum-decoration t)
  '(package-selected-packages
    '(ace-window affe autothemer consult-eglot corfu denote diff-hl
-		diminish emacsql embark-consult evil-collection
+		diminish eat emacsql embark-consult evil-collection
 		evil-commentary evil-escape expand-region
-		gruber-darker-theme kuronami-theme magit marginalia
-		modus-themes multiple-cursors no-littering orderless
-		pyvenv s spacious-padding undo-fu vertico
-		vi-tilde-fringe wgrep zenburn-theme zig-mode)))
+		kuronami-theme magit marginalia modus-themes
+		multiple-cursors no-littering orderless python-black
+		python-isort pyvenv ruff-format spacious-padding
+		undo-fu vertico vi-tilde-fringe wgrep zenburn-theme
+		zig-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

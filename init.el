@@ -7,36 +7,60 @@
   (line-number-mode -1)
   (electric-pair-mode t)
   (which-key-mode t)
-  ;; (column-number-mode t)
   (show-paren-mode t)
   (global-auto-revert-mode t)
   (global-display-line-numbers-mode t)
-  ;; (global-hl-line-mode t)
   :custom
-  (show-paren-delay 0)
   (custom-file (concat user-emacs-directory "custom.el"))
+  (show-paren-delay 0)
   (ring-bell-function 'ignore)
   (frame-resize-pixelwise t)
   (use-short-answers t)
   (inhibit-startup-screen t)
-  (enable-recursive-minibuffers t)
-  (minibuffer-prompt-properties
-	'(read-only t cursor-intangible t face minibuffer-prompt))
   (flymake-fringe-indicator-position 'right-fringe)
+  (display-line-numbers-type 'visual)
+  ;; compilation buffer
   (compilation-scroll-output t)
   (compilation-always-kill t)
-  (display-line-numbers-type 'visual)
+  ;; minibuffer
+  (resize-mini-windows t)
+  (enable-recursive-minibuffers t)
+  (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
+  ;; vc
+  (version-control t)
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (vc-annotate-display-mode 'scale)
+  ;; backups
+  (backup-directory-alist `(("." . "~/.config/emacs/saves")))
+  (delete-old-versions t)
+  (kept-new-versions 6)
+  (kept-old-versions 2)
+  ;; dired
+  (dired-listing-switches "-lah --group-directories-first")
+  (dired-dwim-target t)
+  (dired-kill-when-opening-new-dired-buffer t)
+  ;; scrolling
+  (scroll-margin 0)
+  (scroll-conservatively 101)
+  (scroll-preserve-screen-position t)
+  (auto-window-vscroll nil)
+  ;; isearch
+  (isearch-lazy-count t)
+  (lazy-count-prefix-format "(%s/%s) ")
+  (lazy-count-suffix-format nil)
+  (search-whitespace-regexp ".*?")
+  :hook
+  (minibuffer-setup-hook . cursor-intangible-mode)
   :config
-  (setq-default )
   (when (file-exists-p custom-file)
     (load custom-file))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
   (defun my-duplicate-line ()
     "Duplicate current line"
     (interactive)
     (let ((column (- (point) (point-at-bol)))
-          (line (let ((s (thing-at-point 'line t)))
-                  (if s (string-remove-suffix "\n" s) ""))))
+	  (line (let ((s (thing-at-point 'line t)))
+		  (if s (string-remove-suffix "\n" s) ""))))
       (move-end-of-line 1)
       (newline)
       (insert line)
@@ -48,39 +72,6 @@
   (global-set-key (kbd "C-x C-x") 'kill-current-buffer)
 
   (put 'narrow-to-region 'disabled nil))
-
-(use-package vc
-  :custom
-  (version-control t)
-  (ediff-window-setup-function 'ediff-setup-windows-plain)
-  (vc-annotate-display-mode 'scale))
-
-(use-package backups
-  :custom
-  (backup-directory-alist `(("." . "~/.config/emacs/saves")))
-  (delete-old-versions t)
-  (kept-new-versions 6)
-  (kept-old-versions 2))
-
-(use-package scrolling
-  :custom
-  (scroll-margin 0)
-  (scroll-conservatively 101)
-  (scroll-preserve-screen-position t)
-  (auto-window-vscroll nil))
-
-(use-package dired
-  :custom
-  (dired-listing-switches "-lah --group-directories-first")
-  (dired-dwim-target t)
-  (dired-kill-when-opening-new-dired-buffer t))
-
-(use-package isearch
-  :custom
-  (isearch-lazy-count t)
-  (lazy-count-prefix-format "(%s/%s) ")
-  (lazy-count-suffix-format nil)
-  (search-whitespace-regexp ".*?"))
 
 (use-package no-littering :ensure t)
 
@@ -156,7 +147,7 @@
     (kill-this-buffer))
   :config
   (add-hook 'org-mode-hook
-            (lambda () (setq evil-auto-indent nil)))
+	    (lambda () (setq evil-auto-indent nil)))
   (with-eval-after-load 'evil-maps
     (define-key evil-insert-state-map (kbd "C-n") nil)
     (define-key evil-insert-state-map (kbd "C-p") nil))
@@ -219,7 +210,37 @@
   (corfu-cycle t)
   (corfu-auto t)
   (corfu-auto-delay 0.5)
-  (corfu-separtor ?\s))
+  (corfu-separator ?\s)
+  (corfu-preview-current t)
+  (corfu-preselect-first t)
+  (corfu-history-mode 1)
+  :config
+  (defun corfu-enable-in-minibuffer ()
+    "Enable Corfu in the minibuffer if `completion-at-point' is bound."
+    (when (where-is-internal #'completion-at-point (list (current-local-map)))
+      ;; (setq-local corfu-auto nil) Enable/disable auto completion
+      (corfu-mode 1)))
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
+  (add-hook 'eshell-mode-hook (lambda () (setq-local corfu-quit-no-match t
+						     corfu-quit-at-boundary t
+						     corfu-auto nil)))
+  ;; Avoid press RET twice in shell
+  ;; https://github.com/minad/corfu#completing-in-the-eshell-or-shell
+  (defun corfu-send-shell (&rest _)
+    "Send completion candidate when inside comint/eshell."
+    (cond
+     ((and (derived-mode-p 'eshell-mode) (fboundp 'eshell-send-input))
+      (eshell-send-input))
+     ((and (derived-mode-p 'comint-mode)  (fboundp 'comint-send-input))
+      (comint-send-input))))
+
+  (advice-add #'corfu-insert :after #'corfu-send-shell)
+
+  ;; Completion in eshell
+  (add-hook 'eshell-mode-hook
+	    (lambda ()
+	      (setq-local corfu-auto nil)
+	      (corfu-mode))))
 
 (use-package affe
   :ensure t
@@ -238,19 +259,19 @@
   :ensure t
   :defer t
   :bind (("C-c M-x" . consult-mode-command)
-         ([remap Info-search] . consult-info)
-         ("C-x b" . consult-buffer)
-         ("C-x r b" . consult-bookmark)
+	 ([remap Info-search] . consult-info)
+	 ("C-x b" . consult-buffer)
+	 ("C-x r b" . consult-bookmark)
 	 ("C-x p b" . consult-project-buffer)
-         ("M-g o" . consult-outline)
-         ("M-g i" . consult-imenu)
-         ("M-g I" . consult-imenu-multi)
-         ("M-s d" . affe-find)
-         ("M-s g" . affe-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         ("M-s l" . consult-line)
-         ("M-s L" . consult-line-multi))
+	 ("M-g o" . consult-outline)
+	 ("M-g i" . consult-imenu)
+	 ("M-g I" . consult-imenu-multi)
+	 ("M-s d" . affe-find)
+	 ("M-s g" . affe-grep)
+	 ("M-s G" . consult-git-grep)
+	 ("M-s r" . consult-ripgrep)
+	 ("M-s l" . consult-line)
+	 ("M-s L" . consult-line-multi))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :custom
   (xref-show-xrefs-function #'consult-xref)
@@ -277,9 +298,8 @@
   :config
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+		 (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
   :ensure t 
@@ -303,8 +323,8 @@
 (use-package eglot
   :ensure t
   :bind (:map eglot-mode-map
-              ("C-c r" . eglot-rename)
-              ("C-c R" . xref-find-references))
+	      ("C-c r" . eglot-rename)
+	      ("C-c R" . xref-find-references))
   :hook ((( python-mode python-ts-mode csharp-mode csharp-ts-mode zig-mode ) . eglot-ensure))
   :custom
   (completion-category-overrides '((eglot (styles orderless))))
@@ -329,6 +349,15 @@
   :bind (:map eglot-mode-map
 	      ("C-c s" . consult-eglot-symbols))
   :after consult eglot)
+
+(use-package python-black
+  :ensure t)
+
+(use-package python-isort
+  :ensure t)
+
+(use-package ruff-format
+  :ensure t)
 
 (use-package marginalia
   :ensure t
@@ -388,5 +417,16 @@
 		   :immediate-finish nil
 		   :kill-buffer t
 		   :jump-to-captured t))))
+
+(use-package eat
+  :ensure t
+  :config
+  (setq eat-kill-buffer-on-exit t
+	eat-enable-yank-to-terminal t
+	eat-enable-directory-tracking t
+	eat-enable-shell-command-history t
+	eat-enable-shell-prompt-annotation t
+	eat-term-scrollback-size nil)
+  (add-hook 'eshell-load-hook #'eat-eshell-mode))
 
 ;; (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))

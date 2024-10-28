@@ -1,5 +1,5 @@
 ;;; -*- lexical-binding: t -*-
-(set-face-attribute 'default nil :family "JetBrains Mono" :height 190 :weight 'normal)
+(set-face-attribute 'default nil :family "Departure Mono" :height 190 :weight 'normal)
 
 (defvar my-gc-cons-threshold (* 16 1024 1024)
   "The value of 'gc-cons-threshold' after Emacs startup")
@@ -13,6 +13,7 @@
 (setq use-file-dialog nil)
 (setq use-dialog-box nil)
 
+(setq use-package-enable-imenu-support 1)
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
