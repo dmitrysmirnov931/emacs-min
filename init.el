@@ -86,18 +86,14 @@
   :config
   (load-theme 'kuronami t))
 
-;; (use-package modus-themes
-;;   :ensure t
-;;   :config
-;;   (setq modus-themes-italic-constructs t)
-;;   (load-theme 'modus-vivendi t))
-
 (use-package diff-hl
   :ensure t
   :defer t
   :hook ((find-file . global-diff-hl-mode)
 	 (find-file . diff-hl-flydiff-mode)
-	 (find-file . diff-hl-margin-mode))
+	 (find-file . diff-hl-margin-mode)
+	 (magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
+	 (magit-post-refresh-hook . diff-hl-magit-post-refresh))
   :custom
   (diff-hl-side 'left))
 
