@@ -17,15 +17,20 @@
 
 ;; bootstrap use-package
 (use-package use-package
-    :ensure nil 
-    :custom
-    (use-package-verbose t)
-    (use-package-expand-minimally t))
+  :custom
+  (use-package-verbose t)
+  (use-package-expand-minimally t))
+
+(use-package gcmh
+  :ensure t
+  :hook (after-init . gcmh-mode))
 
 (use-package no-littering :ensure t)
 
 (add-to-list 'load-path (expand-file-name "site-lisp" no-littering-etc-directory))
 (require 'base)
+(require 'setup-recentf)
+(require 'setup-eshell)
 (require 'setup-zig-mode)
 (require 'setup-haskell-mode)
 (require 'setup-eglot)

@@ -1,0 +1,5 @@
+alias d dired $1
+alias e find-file-other-window $1
+alias ff find-file $1
+alias ll /bin/ls -AlFh --color
+alias ls /bin/ls --color

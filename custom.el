@@ -14,8 +14,8 @@
    '(ace-window affe autothemer consult-eglot corfu denote diff-hl
 		diminish ef-themes emacsql embark-consult
 		evil-collection evil-commentary evil-escape
-		expand-region f haskell-mode ht lv magit marginalia
-		markdown-mode modus-themes multiple-cursors
+		expand-region f gcmh haskell-mode ht lv magit
+		marginalia markdown-mode modus-themes multiple-cursors
 		no-littering orderless python-black python-isort
 		pyvenv ruff-format spacious-padding spinner undo-fu
 		vertico vi-tilde-fringe wgrep zig-mode)))
@@ -25,21 +25,21 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(eglot-inlay-hint-face ((t (:inherit shadow :slant italic :height 1.0 :family "Iosevka"))))
- '(fringe ((t :background "#ffffff")))
- '(header-line ((t :box (:line-width 4 :color "#efefef" :style nil))))
- '(header-line-highlight ((t :box (:color "#f0f6f0"))))
+ '(fringe ((t :background "unspecified-bg")))
+ '(header-line ((t :box (:line-width 4 :color "unspecified-bg" :style nil))))
+ '(header-line-highlight ((t :box (:color "unspecified-fg"))))
  '(keycast-key ((t)))
- '(line-number ((t :background "#ffffff")))
- '(mode-line ((t :background "#ffffff" :overline "#4d4d4c" :box (:line-width 4 :color "#ffffff" :style nil))))
- '(mode-line-active ((t :background "#222323" :overline "#f0f6f0" :box (:line-width 6 :color "#222323" :style nil))))
- '(mode-line-highlight ((t :box (:color "#4d4d4c"))))
- '(mode-line-inactive ((t :background "#ffffff" :overline "#d6d6d6" :box (:line-width 4 :color "#ffffff" :style nil))))
- '(tab-bar-tab ((t :box (:line-width 4 :color "#d6d6d6" :style nil))))
- '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "#8e908c" :style nil))))
+ '(line-number ((t :background "unspecified-bg")))
+ '(mode-line ((t :background "unspecified-bg" :overline "unspecified-fg" :box (:line-width 4 :color "unspecified-bg" :style nil))))
+ '(mode-line-active ((t :background "unspecified-bg" :overline nil :box (:line-width 4 :color "unspecified-bg" :style nil))))
+ '(mode-line-highlight ((t :box (:color "unspecified-fg"))))
+ '(mode-line-inactive ((t :background "unspecified-bg" :overline nil :box (:line-width 4 :color "unspecified-bg" :style nil))))
+ '(tab-bar-tab ((t :box (:line-width 4 :color "grey" :style nil))))
+ '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "grey" :style nil))))
  '(tab-line-tab ((t)))
  '(tab-line-tab-active ((t)))
  '(tab-line-tab-inactive ((t)))
- '(vertical-border ((t :background "#ffffff" :foreground "#ffffff")))
- '(window-divider ((t (:background "#ffffff" :foreground "#ffffff"))))
- '(window-divider-first-pixel ((t (:background "#ffffff" :foreground "#ffffff"))))
- '(window-divider-last-pixel ((t (:background "#ffffff" :foreground "#ffffff")))))
+ '(vertical-border ((t :background "unspecified-bg" :foreground "unspecified-bg")))
+ '(window-divider ((t (:background "unspecified-bg" :foreground "unspecified-bg"))))
+ '(window-divider-first-pixel ((t (:background "unspecified-bg" :foreground "unspecified-bg"))))
+ '(window-divider-last-pixel ((t (:background "unspecified-bg" :foreground "unspecified-bg")))))
