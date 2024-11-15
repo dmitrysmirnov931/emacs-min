@@ -8,16 +8,17 @@
    '("8f552d57608edf3dcc58136d7fa87d8490ddc6e2676fe9c84ba9ba6455cc4caa"
      "8f5b54bf6a36fe1c138219960dd324aad8ab1f62f543bed73ef5ad60956e36ae"
      default))
+ '(eglot-confirm-server-edits nil nil nil "Customized with use-package eglot")
  '(font-lock-maximum-decoration t)
  '(package-selected-packages
    '(ace-window affe autothemer consult-eglot corfu denote diff-hl
-		diminish eat emacsql embark-consult evil-collection
-		evil-commentary evil-escape expand-region
-		kuronami-theme magit marginalia modus-themes
-		multiple-cursors no-littering orderless python-black
-		python-isort pyvenv ruff-format spacious-padding
-		undo-fu vertico vi-tilde-fringe wgrep zenburn-theme
-		zig-mode)))
+		diminish ef-themes emacsql embark-consult
+		evil-collection evil-commentary evil-escape
+		expand-region f haskell-mode ht lv magit marginalia
+		markdown-mode modus-themes multiple-cursors
+		no-littering orderless python-black python-isort
+		pyvenv ruff-format spacious-padding spinner undo-fu
+		vertico vi-tilde-fringe wgrep zig-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
