@@ -18,10 +18,13 @@
      message-log-max 16384
      package-enable-at-startup t
      use-package-enable-imenu-support 1
-     load-prefer-newer noninteractive)
+     load-prefer-newer noninteractive
+     ns-use-proxy-icon nil
+     frame-title-format "")
     (set-face-attribute 'default nil :family "Berkeley Mono" :height 170 :weight 'normal)
     (advice-add #'display-startup-echo-area-message :override #'ignore)
     (advice-add #'display-startup-screen :override #'ignore)
+    (add-to-list 'default-frame-alist '(undecorated-round . t))
     (add-hook 'emacs-startup-hook
               (lambda nil
                   (setq gc-cons-threshold original-gc-cons-threshold))))

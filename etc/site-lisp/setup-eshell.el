@@ -8,14 +8,6 @@
     (let ((buf (eshell)))
       (switch-to-buffer (other-buffer buf))
       (switch-to-buffer-other-window buf)))
-  :init
-  (add-hook 'eshell-mode-hook
-	    (lambda ()
-	      (eshell/alias "ls" (concat ls "--color"))
-	      (eshell/alias "ll" (concat ls "--AlFh --color"))
-	      (eshell/alias "ff" "find-file $1")
-	      (eshell/alias "e"  "find-file-other-window $1")
-	      (eshell/alias "d"  "dired $1")))
   :config
   (setq eshell-scroll-to-bottom-on-input 'this)
   (setq eshell-scroll-to-bottom-on-output nil)

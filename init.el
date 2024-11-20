@@ -23,12 +23,15 @@
 
 (use-package gcmh
   :ensure t
+  :diminish
   :hook (after-init . gcmh-mode))
 
 (use-package no-littering :ensure t)
 
 (add-to-list 'load-path (expand-file-name "site-lisp" no-littering-etc-directory))
-(require 'base)
+(require 'setup-emacs)
+(require 'setup-keymaps)
+(require 'setup-dired)
 (require 'setup-recentf)
 (require 'setup-eshell)
 (require 'setup-zig-mode)
@@ -36,8 +39,8 @@
 (require 'setup-eglot)
 (require 'setup-diminish)
 (require 'setup-modus-themes)
-(require 'setup-diff-hl)
 (require 'setup-spacious-padding)
+(require 'setup-diff-hl)
 (require 'setup-vi-tilde-fringe)
 (require 'setup-evil)
 (require 'setup-vertico)
@@ -51,4 +54,4 @@
 (require 'setup-magit)
 (require 'setup-ace-window)
 (require 'setup-denote)
-(require 'setup-keymaps)
+

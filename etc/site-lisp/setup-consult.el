@@ -3,6 +3,8 @@
 (use-package affe
   :ensure t
   :defer t
+  :bind (("M-s d" . affe-find)
+	 ("M-s g" . affe-grep))
   :config
   (defun affe-orderless-regexp-compiler (input _type _ignorecase)
     (setq input (cdr (orderless-compile input)))
@@ -12,6 +14,17 @@
 (use-package consult
   :ensure t
   :defer t
+  :bind (("C-x b"   . consult-buffer)
+	 ("C-x r b" . consult-bookmark)
+	 ("C-x p b" . consult-project-buffer)
+	 ("M-g o"   . consult-outline)
+	 ("M-g i"   . consult-imenu)
+	 ("M-g I"   . consult-imenu-multi)
+	 ("M-s e"   . consult-recent-file)
+	 ("M-s G"   . consult-git-grep)
+	 ("M-s r"   . consult-ripgrep)
+	 ("M-s l"   . consult-line)
+	 ("M-s L"   . consult-line-multi))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :custom
   (xref-show-xrefs-function #'consult-xref)
@@ -32,6 +45,7 @@
 
 (use-package consult-eglot
   :ensure t
+  :bind (("C-c s" . consult-eglot-symbols))
   :defer t
   :after consult eglot)
 

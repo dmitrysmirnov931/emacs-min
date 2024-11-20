@@ -3,6 +3,9 @@
 (use-package denote
   :ensure t
   :defer t
+  :bind (("C-c n n" . denote)
+	 ("C-c n r" . denote-region)
+	 ("C-c n f" . denote-open-or-create))
   :custom
   (denote-directory (expand-file-name "~/org/denote/"))
   (denote-save-buffers nil)

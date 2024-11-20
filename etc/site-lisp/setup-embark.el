@@ -3,6 +3,7 @@
 (use-package embark
   :ensure t
   :defer t
+  :bind (("s-." . embark-act))
   :config
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist

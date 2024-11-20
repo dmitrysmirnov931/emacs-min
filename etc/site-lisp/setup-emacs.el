@@ -40,10 +40,6 @@
   (delete-old-versions t)
   (kept-new-versions 6)
   (kept-old-versions 2)
-  ;; dired
-  (dired-listing-switches "-lah --group-directories-first")
-  (dired-dwim-target t)
-  (dired-kill-when-opening-new-dired-buffer t)
   ;; scrolling
   (scroll-margin 0)
   (scroll-conservatively 101)
@@ -59,4 +55,5 @@
   :config
   (put 'narrow-to-region 'disabled nil))
 
-(provide 'base)
+(provide 'setup-emacs)
+;;; setup-emacs.el ends here

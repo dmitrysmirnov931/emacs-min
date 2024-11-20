@@ -3,6 +3,7 @@
 (use-package avy
   :ensure t
   :defer t
+  :bind (("s-j" . avy-goto-char-timer))
   :custom
   (avy-all-windows 'all-frames))
 
