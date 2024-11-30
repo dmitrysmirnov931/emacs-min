@@ -1,13 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package eshell
-  :preface
-  (defun my--eshel-other-window ()
-    "Open a `eshell' in a new window"
-    (interactive)
-    (let ((buf (eshell)))
-      (switch-to-buffer (other-buffer buf))
-      (switch-to-buffer-other-window buf)))
   :config
   (setq eshell-scroll-to-bottom-on-input 'this)
   (setq eshell-scroll-to-bottom-on-output nil)

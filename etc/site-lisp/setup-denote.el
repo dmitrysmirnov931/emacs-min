@@ -30,6 +30,5 @@
 		   :kill-buffer t
 		   :jump-to-captured t))))
 
-
 (provide 'setup-denote)
 ;;; setup-denote.el ends here

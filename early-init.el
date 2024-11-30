@@ -1,45 +1,46 @@
 ;;; -*- lexical-binding: t -*-
 
-(let ((original-gc-cons-threshold gc-cons-threshold))
-    (setq
-     gc-cons-threshold most-positive-fixnum
-     read-process-output-max (* 1024 1024 4) ; 4mb
-     which-func-update-delay 1.0
-     use-file-dialog nil
-     use-dialog-box nil
-     inhibit-startup-screen t
-     inhibit-compacting-font-caches t
-     inhibit-startup-echo-area-message user-login-name
-     inhibit-startup-buffer-menu t
-     inhibit-x-resources t
-     initial-buffer-choice nil
-     frame-inhibit-implied-resize t
-     initial-major-mode 'fundamental-mode
-     message-log-max 16384
-     package-enable-at-startup t
-     use-package-enable-imenu-support 1
-     load-prefer-newer noninteractive
-     ns-use-proxy-icon nil
-     frame-title-format "")
-    (set-face-attribute 'default nil :family "Berkeley Mono" :height 170 :weight 'normal)
-    (advice-add #'display-startup-echo-area-message :override #'ignore)
-    (advice-add #'display-startup-screen :override #'ignore)
-    (add-to-list 'default-frame-alist '(undecorated-round . t))
-    (add-hook 'emacs-startup-hook
-              (lambda nil
-                  (setq gc-cons-threshold original-gc-cons-threshold))))
+(defvar default-file-name-handler-alist file-name-handler-alist)
 
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setq file-name-handler-alist nil
+      gc-cons-threshold most-positive-fixnum
+      inhibit-default-init t
+      inhibit-message t
+      inhibit-redisplay t
+      inhibit-startup-buffer-menu t
+      inhibit-startup-echo-area-message ""
+      inhibit-scratch-message nil
+      inhibit-startup-screen t
+      inhibit-compacnit-font-caches t
+      inhibit-x-resources t
+      load-prefer-newer noninteractive
+      native-comp-async-report-warnings-errors nil
+      native-comp-deferred-compilation t
+      package-native-compile t
+      site-run-file nil
+      initial-major-mode 'fundamental-mode
+      frame-inhibit-implied-resize t
+      message-log-max 16384
+      package-enable-at-startup t
+      use-file-dialog nil
+      use-dialog-box nil)
+
+(set-face-attribute 'default nil :family "Berkeley Mono" :height 150 :weight 'normal)
+(push '(tool-bar-lines . 0) default-frame-alist)
+;; (push '(undecorated . t) default-frame-alist)
+(push '(fullscreen . maximized) initial-frame-alist)
+
 (add-hook 'emacs-startup-hook
-          (lambda nil
-              (when (and custom-file
-                         (file-exists-p custom-file))
-                  (load custom-file nil 'nomessage))))
+	  (lambda nil
+	    (setq file-name-handler-alist default-file-name-handler-alist
+		  gc-cons-threshold (* 1024 1024 64)
+		  inhibit-redisplay nil
+		  inhibit-message nil)))
 
-;; Native-comp
-(when (and (fboundp 'native-comp-available-p) (native-comp-available-p))
-  (progn
-    (setq native-comp-async-report-warnings-errors nil)
-    (setq native-comp-deferred-compilation t)
-    (add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
-    (setq package-native-compile t)))
+(advice-add #'display-startup-echo-area-message :override #'ignore)
+(advice-add #'display-startup-screen :override #'ignore)
+;; (add-to-list 'default-frame-alist '(undecorated-round . t))
+
+(startup-redirect-eln-cache
+   (convert-standard-filename
+    (expand-file-name  "var/eln-cache/" user-emacs-directory)))

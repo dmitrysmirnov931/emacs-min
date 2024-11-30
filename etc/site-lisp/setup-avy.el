@@ -5,6 +5,7 @@
   :defer t
   :bind (("s-j" . avy-goto-char-timer))
   :custom
+  (avy-style 'de-bruijn)
   (avy-all-windows 'all-frames))
 
 (provide 'setup-avy)

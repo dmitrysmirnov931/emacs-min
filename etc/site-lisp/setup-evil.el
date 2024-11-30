@@ -31,7 +31,6 @@
 
 (use-package evil-collection
   :ensure t
-  :diminish evil-collection-unimpaired-mode
   :defer t
   :after evil
   :hook (evil-mode . evil-collection-init)
@@ -41,14 +40,12 @@
 
 (use-package evil-commentary
   :after evil
-  :diminish evil-commentary-mode
   :ensure t
   :defer t
   :hook (evil-mode . evil-commentary-mode))
 
 (use-package evil-escape
   :after evil
-  :diminish evil-escape-mode
   :ensure t
   :defer t
   :hook (evil-mode . evil-escape-mode)
