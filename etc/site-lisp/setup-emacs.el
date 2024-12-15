@@ -14,6 +14,7 @@
   (column-number-mode t)
   (delete-selection-mode t)
   :custom
+  (truncate-lines t)
   (read-process-output-max (* 1024 1024))
   (history-delete-duplicates t)
   (line-spacing 1)
@@ -56,6 +57,8 @@
   (search-whitespace-regexp ".*?")
   :hook
   (minibuffer-setup-hook . cursor-intangible-mode)
+  (minibuffer-setup-hook . (lambda () (electric-pair-mode -1)))
+  (minibuffer-exit-hook . (lambda () (electric-pair-mode t)))
   :config
   (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
 

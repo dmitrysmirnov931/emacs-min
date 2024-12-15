@@ -1,4 +1,3 @@
-
 ;; -*- lexical-binding: t -*-
 
 (setf (getenv "EDITOR") "emacsclient")
@@ -50,7 +49,7 @@
 (require 'setup-pyvenv)
 (require 'setup-eglot)
 (require 'setup-themes)
-(require 'setup-spacious-padding)
+;; (require 'setup-spacious-padding)
 (require 'setup-diff-hl)
 (require 'setup-evil)
 (require 'setup-vertico)
@@ -66,3 +65,4 @@
 (require 'setup-denote)
 (require 'setup-org)
 (require 'setup-nerd-icons)
+(require 'setup-casual-suite)
