@@ -17,6 +17,7 @@
 (global-set-key (kbd "C-c n a") 'org-agenda)
 (global-set-key (kbd "M-p")     'previous-history-element)
 (global-set-key (kbd "M-n")     'next-history-element)
+(global-set-key (kbd "C-c s")   'scratch-buffer)
 
 (provide 'setup-keymaps)
 ;;; setup-keymaps.el ends here

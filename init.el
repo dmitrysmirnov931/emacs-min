@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t -*-
 
 (setf (getenv "EDITOR") "emacsclient")
+(set-face-attribute 'default nil :family "TX-02" :height 150)
 
 ;; bootstrap package.el
 (require 'package)
@@ -48,8 +49,8 @@
 (require 'setup-haskell-mode)
 (require 'setup-pyvenv)
 (require 'setup-eglot)
+(require 'setup-eldoc)
 (require 'setup-themes)
-;; (require 'setup-spacious-padding)
 (require 'setup-diff-hl)
 (require 'setup-evil)
 (require 'setup-vertico)
@@ -64,5 +65,6 @@
 (require 'setup-ace-window)
 (require 'setup-denote)
 (require 'setup-org)
-(require 'setup-nerd-icons)
+(require 'setup-spacious-padding)
+;; (require 'setup-nerd-icons)
 (require 'setup-casual-suite)

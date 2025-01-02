@@ -25,7 +25,6 @@
       use-file-dialog nil
       use-dialog-box nil)
 
-(set-face-attribute 'default nil :family "Berkeley Mono" :height 170 :weight 'normal)
 (push '(tool-bar-lines . 0) default-frame-alist)
 ;; (push '(undecorated . t) default-frame-alist)
 (push '(fullscreen . maximized) initial-frame-alist)

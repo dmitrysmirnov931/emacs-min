@@ -45,7 +45,7 @@
 
 (use-package consult-eglot
   :ensure t
-  :bind (("C-c s" . consult-eglot-symbols))
+  :bind (("M-s s" . consult-eglot-symbols))
   :defer t
   :after consult eglot)
 
