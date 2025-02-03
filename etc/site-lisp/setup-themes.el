@@ -11,16 +11,25 @@
 ;; 	'((fringe                      bg-main)
 ;; 	  (bultin                      fg-main)
 ;; 	  (constant                    fg-main)
-;; 	  (variable                    fg-main)))
+;; 	  (variable                    fg-main)
+;; 	  (name                        fg-main)
+;; 	  (identifier                  fg-main)
+;; 	  (docmarkup                   fg-main)
+;; 	  (keyword                     blue)
+;; 	  (type                        blue)
+;; 	  (fnname                      blue)
+;; 	  (string                      green)
+;; 	  ))
+
 ;;   (setq modus-themes-italic-constructs nil
 ;; 	modus-themes-bold-constructs   t)
 
-;;   (modus-themes-load-theme 'modus-operandi-tinted))
+;;   (modus-themes-load-theme 'modus-vivendi))
 
-(use-package base16-theme
+(use-package gruvbox-theme
   :ensure t
   :config
-  (load-theme 'base16-gruvbox-material-dark-medium t))
+  (load-theme 'gruvbox-dark-medium t))
 
 (provide 'setup-themes)
 ;;; setup-themes.el ends here

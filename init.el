@@ -1,7 +1,9 @@
 ;; -*- lexical-binding: t -*-
 
 (setf (getenv "EDITOR") "emacsclient")
-(set-face-attribute 'default nil :family "TX-02" :height 150)
+(set-face-attribute 'default nil :family "Iosevka SS08" :height 170)
+(set-face-attribute 'fixed-pitch nil :family "Iosevka SS08" :height 170)
+(set-face-attribute 'variable-pitch nil :family "Iosevka SS08" :height 170)
 
 ;; bootstrap package.el
 (require 'package)
@@ -45,11 +47,13 @@
 (require 'setup-dired)
 (require 'setup-recentf)
 (require 'setup-eshell)
+(require 'setup-docker)
 (require 'setup-zig-mode)
 (require 'setup-haskell-mode)
+(require 'setup-markdown-mode)
 (require 'setup-pyvenv)
 (require 'setup-eglot)
-(require 'setup-eldoc)
+;; (require 'setup-eldoc)
 (require 'setup-themes)
 (require 'setup-diff-hl)
 (require 'setup-evil)
@@ -65,6 +69,7 @@
 (require 'setup-ace-window)
 (require 'setup-denote)
 (require 'setup-org)
-(require 'setup-spacious-padding)
+;; (require 'setup-ultra-scroll)
+;; (require 'setup-spacious-padding)
 ;; (require 'setup-nerd-icons)
-(require 'setup-casual-suite)
+;; (require 'setup-casual-suite)

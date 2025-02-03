@@ -3,7 +3,9 @@
 (use-package magit
   :ensure t
   :defer t
-  :bind (("C-x g" . magit-status))
+  :bind
+  (("C-x g" . magit-status)
+   ("C-c b" . magit-blame))
   :custom
   (magit-diff-refine-hunk 'all)
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
