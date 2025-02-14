@@ -1,23 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package use-package
-  :custom
-  (use-package-verbose t)
-  (use-package-vc-prefer-newest t)
-  (use-package-expand-minimally t))
-
-(use-package gcmh
-  :ensure t
-  :hook (after-init . gcmh-mode))
-
-(use-package no-littering
-  :ensure t
-  :config
-  (let ((dir (no-littering-expand-var-file-name "lock-files/")))
-    (make-directory dir t)
-    (setq lock-file-name-transforms `((".*" ,dir t))))
-  (setq custom-file (no-littering-expand-etc-file-name "custom.el")))
-
 (use-package emacs
   :init
   (tool-bar-mode -1)
