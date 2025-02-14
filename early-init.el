@@ -26,7 +26,6 @@
       use-dialog-box nil)
 
 (push '(tool-bar-lines . 0) default-frame-alist)
-;; (push '(undecorated . t) default-frame-alist)
 (push '(fullscreen . maximized) initial-frame-alist)
 
 (add-hook 'emacs-startup-hook
@@ -38,7 +37,6 @@
 
 (advice-add #'display-startup-echo-area-message :override #'ignore)
 (advice-add #'display-startup-screen :override #'ignore)
-;; (add-to-list 'default-frame-alist '(undecorated-round . t))
 
 (startup-redirect-eln-cache
    (convert-standard-filename
