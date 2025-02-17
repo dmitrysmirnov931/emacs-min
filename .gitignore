@@ -7,3 +7,4 @@ var/
 saves/
 transient/
 tree-sitter/
+*.elc
