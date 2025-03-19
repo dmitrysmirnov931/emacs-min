@@ -1,4 +1,4 @@
-#+title: My literate emacs configuratio
+#+title: My literate emacs configuration
 #+author: Dmitrii Smirnov
 #+property: header-args :tangle yes :results output silent
 #+startup: show2levels
@@ -31,7 +31,6 @@
 #+end_src
 
 * Early init 
-
 #+begin_src emacs-lisp :tangle early-init.el
   (defvar default-file-name-handler-alist file-name-handler-alist)
 
@@ -56,7 +55,8 @@
         message-log-max 16384
         package-enable-at-startup t
         use-file-dialog nil
-        use-dialog-box nil)
+        use-dialog-box nil
+        ns-use-proxy-icon nil)
 
   (push '(tool-bar-lines . 0) default-frame-alist)
   ;; (push '(undecorated . t) default-frame-alist)
@@ -72,6 +72,8 @@
   (advice-add #'display-startup-echo-area-message :override #'ignore)
   (advice-add #'display-startup-screen :override #'ignore)
   ;; (add-to-list 'default-frame-alist '(undecorated-round . t))
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . light))
 
   (startup-redirect-eln-cache
    (convert-standard-filename
@@ -125,70 +127,73 @@
 * Built-in packages configuration
 ** Core emacs
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :family "Iosevka SS08" :height 140)
-  (set-face-attribute 'fixed-pitch nil :family "Iosevka SS08" :height 140)
-  (set-face-attribute 'variable-pitch nil :family "Iosevka SS08" :height 140)
+    (set-face-attribute 'default nil :family "PragmataPro" :height 170)
+    (set-face-attribute 'fixed-pitch nil :family "PragmataPro" :height 170)
+    (set-face-attribute 'variable-pitch nil :family "PragmataPro" :height 170)
 
-  (use-package emacs
-    :init
-    (tool-bar-mode -1)
-    (menu-bar-mode -1)
-    (scroll-bar-mode -1)
-    (electric-pair-mode t)
-    (which-key-mode t)
-    (show-paren-mode t)
-    (global-auto-revert-mode t)
-    (savehist-mode t)
-    (delete-selection-mode t)
-    (global-hl-line-mode t)
-    (display-line-numbers-mode t)
-    :custom
-    (display-line-numbers 'relative)
-    (line-number-mode nil)
-    (read-process-output-max (* 1024 1024))
-    (history-delete-duplicates t)
-    (line-spacing 1)
-    (which-function-update-delay 0.5)
-    (ring-bell-function 'ignore)
-    (frame-resize-pixelwise t)
-    (use-short-answers t)
-    (ffap-machine-p-known 'reject)
-    (global-text-scale-adjust-resizes-frames nil)
-    (scroll-conservatively most-positive-fixnum)
-    (eldoc-echo-area-use-multiline-p nil)
-    ;; show-paren
-    (show-paren-delay 0.1)
-    (show-paren-highlight-openparen t)
-    (show-paren-when-point-inside-paren t)
-    (show-paren-when-point-in-periphery t)
-    ;; compilation buffer
-    (compilation-scroll-output t)
-    (compilation-always-kill t)
-    ;; minibuffer
-    (resize-mini-windows t)
-    (enable-recursive-minibuffers t)
-    (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
-    ;; vc
-    (version-control t)
-    (ediff-window-setup-function 'ediff-setup-windows-plain)
-    ;; backups
-    (backup-directory-alist `(("." . (expand-file-name "saves" no-littering-var-directory))))
-    (delete-old-versions t)
-    (kept-new-versions 6)
-    (kept-old-versions 2)
-    ;; isearch
-    (isearch-lazy-count t)
-    (lazy-count-prefix-format "(%s/%s) ")
-    (lazy-count-suffix-format nil)
-    (search-whitespace-regexp ".*?")
-    :hook
-    (minibuffer-setup-hook . cursor-intangible-mode)
-    (minibuffer-setup-hook . (lambda () (electric-pair-mode -1)))
-    (minibuffer-exit-hook . (lambda () (electric-pair-mode t)))
-    :config
-    (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
-    (put 'narrow-to-region 'disabled nil)
-    (put 'dired-find-alternate-file 'disabled nil))
+    (use-package emacs
+      :init
+      (tool-bar-mode -1)
+      (menu-bar-mode -1)
+      (scroll-bar-mode -1)
+      (electric-pair-mode t)
+      (which-key-mode t)
+      (show-paren-mode t)
+      (global-auto-revert-mode t)
+      (savehist-mode t)
+      (delete-selection-mode t)
+      (global-hl-line-mode t)
+      (line-number-mode t)
+      (column-number-mode t)
+      :custom
+      (truncate-lines t)
+      (read-process-output-max (* 1024 1024))
+      (history-delete-duplicates t)
+      (line-spacing 1)
+      (which-function-update-delay 0.5)
+      (ring-bell-function 'ignore)
+      (frame-resize-pixelwise t)
+      (use-short-answers t)
+      (ffap-machine-p-known 'reject)
+      (global-text-scale-adjust-resizes-frames nil)
+      (scroll-conservatively most-positive-fixnum)
+      (eldoc-echo-area-use-multiline-p nil)
+      ;; show-paren
+      (show-paren-delay 0.1)
+      (show-paren-highlight-openparen t)
+      (show-paren-when-point-inside-paren t)
+      (show-paren-when-point-in-periphery t)
+      ;; compilation buffer
+      (compilation-scroll-output t)
+      (compilation-always-kill t)
+      ;; minibuffer
+      (resize-mini-windows t)
+      (enable-recursive-minibuffers t)
+      (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
+      ;; vc
+      (version-control t)
+      (ediff-window-setup-function 'ediff-setup-windows-plain)
+      ;; backups
+      (backup-directory-alist `(("." . (expand-file-name "saves" no-littering-var-directory))))
+      (delete-old-versions t)
+      (kept-new-versions 6)
+      (kept-old-versions 2)
+      ;; isearch
+      (isearch-lazy-count t)
+      (lazy-count-prefix-format "(%s/%s) ")
+      (lazy-count-suffix-format nil)
+      (search-whitespace-regexp ".*?")
+      :hook
+      (minibuffer-setup-hook . cursor-intangible-mode)
+      (minibuffer-setup-hook . (lambda () (electric-pair-mode -1)))
+      (minibuffer-exit-hook . (lambda () (electric-pair-mode t)))
+      :config
+      (setq frame-title-format
+    	(list (format "%s %%S: %%j " (system-name))
+    		'(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+      (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
+      (put 'narrow-to-region 'disabled nil)
+      (put 'dired-find-alternate-file 'disabled nil))
 #+end_src
 
 ** Dired
@@ -259,10 +264,11 @@
     :ensure t
     :defer t
     :bind (("C-c h" . haskell-hoogle))
+    :hook (haskell-mode-hook . interactive-haskell-mode)
+    :custom
+    (haskell-hoogle-command nil)
     :config
-    (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
-    (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-    (setq haskell-hoogle-command nil))
+    (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode)))
 #+end_src
 
 ** Markdown
@@ -311,9 +317,9 @@
   (use-package vertico-directory
     :defer t
     :bind (:map vertico-map
-                ("RET"   . vertico-directory-enter)
-                ("DEL"   . vertico-directory-delete-char)
-                ("M-DEL" . vertico-directory-delete-word))
+        	      ("RET"   . vertico-directory-enter)
+        	      ("DEL"   . vertico-directory-delete-char)
+        	      ("M-DEL" . vertico-directory-delete-word))
     :after vertico
     :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 #+end_src
@@ -342,9 +348,7 @@
         ;; (setq-local corfu-auto nil) Enable/disable auto completion
         (corfu-mode 1)))
     (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
-    (add-hook 'eshell-mode-hook (lambda () (setq-local corfu-quit-no-match t
-                                                                         corfu-quit-at-boundary t
-                                                                         corfu-auto nil)))
+    (add-hook 'eshell-mode-hook (lambda () (setq-local corfu-quit-no-match t corfu-quit-at-boundary t corfu-auto nil)))
     ;; Avoid press RET twice in shell
     ;; https://github.com/minad/corfu#completing-in-the-eshell-or-shell
     (defun corfu-send-shell (&rest _)
@@ -378,17 +382,6 @@
 
 ** Consult
 #+begin_src emacs-lisp
-  (use-package affe
-    :ensure t
-    :defer t
-    :bind (("M-s d" . affe-find)
-           ("M-s g" . affe-grep))
-    :config
-    (defun affe-orderless-regexp-compiler (input _type _ignorecase)
-      (setq input (cdr (orderless-compile input)))
-      (cons input (apply-partially #'orderless--highlight input t)))
-    (setq affe-regexp-compiler #'affe-orderless-regexp-compiler))
-
   (use-package consult
     :ensure t
     :defer t
@@ -400,6 +393,8 @@
            ("M-g I"   . consult-imenu-multi)
            ("M-s e"   . consult-recent-file)
            ("M-s G"   . consult-git-grep)
+  	 ("M-s d"   . consult-find)
+  	 ("M-s f"   . consult-flymake)
            ("M-s r"   . consult-ripgrep)
            ("M-s l"   . consult-line)
            ("M-s L"   . consult-line-multi))
@@ -444,7 +439,7 @@
     :ensure t 
     :defer t
     :hook
-    (embark-collect-mode . consult-preview-at-point-mode))
+    (embark-collect-mode-hook . consult-preview-at-point-mode))
 #+end_src
 
 ** Orderless
@@ -502,14 +497,15 @@
 
 ** Ace-window
 #+begin_src emacs-lisp
-  (use-package ace-window
-    :ensure t
-    :defer t
-    :bind (("s-o" . ace-window)
-           ("s-p" . ace-delete-other-windows))
-    :custom
-    (aw-minibuffer-flag t)
-    (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+    (use-package ace-window
+      :ensure t
+      :defer t
+      :bind (("s-o" . ace-window)
+             ("s-p" . ace-delete-other-windows)
+  	   ("s-[" . ace-delete-window))
+      :custom
+      (aw-minibuffer-flag t)
+      (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
 
 ** Evil
@@ -591,31 +587,53 @@
 
 ** Themes
 #+begin_src emacs-lisp
-  (use-package standard-themes
+  (use-package modus-themes
     :ensure t
     :config
-    (load-theme 'standard-dark t))
+    (load-theme 'modus-operandi-tinted t))
+#+end_src
+** Parrot
+#+begin_src emacs-lisp
+  (use-package parrot
+    :ensure t
+    :custom
+    (parrot-mode t))
 #+end_src
 ** Spacious padding
+# #+begin_src emacs-lisp
+# (use-package spacious-padding
+#   :ensure t
+#   :defer t
+#   :hook (after-init . spacious-padding-mode)
+#   :custom
+#   (spacious-padding-widths
+#    '(
+#      :internal-border-width 10
+#      :header-line-width 4
+#      :mode-line-width 4
+#      :tab-width 4
+#      :right-divider-width 30
+#      :scroll-bar-width 8
+#      :fringe-width 8))
+#   (spacious-padding-subtle-mode-line
+#    '(
+#      :mode-line-active 'default
+#      :mode-line-inactive vertical-border)))
+# #+end_src
+** Ibuffer-project
 #+begin_src emacs-lisp
-(use-package spacious-padding
-  :ensure t
-  :defer t
-  :hook (after-init . spacious-padding-mode)
-  :custom
-  (spacious-padding-widths
-   '(
-     :internal-border-width 15
-     :header-line-width 4
-     :mode-line-width 4
-     :tab-width 4
-     :right-divider-width 30
-     :scroll-bar-width 8
-     :fringe-width 8))
-  (spacious-padding-subtle-mode-line
-   '(
-     :mode-line-active 'default
-     :mode-line-inactive vertical-border)))
+  (use-package ibuffer-project
+    :ensure t
+    :defer t
+    :hook (ibuffer-hook . (lambda () (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
+			  (unless (eq ibuffer-sorting-mode 'project-file-relative) (ibuffer-do-sort-by-project-file-relative)))))
+#+end_src
+** Breadcrumbs
+#+begin_src emacs-lisp
+  (use-package breadcrumb
+    :init (breadcrumb-mode t)
+    :defer t
+    :ensure t)
 #+end_src
 * Org
 ** Org configuration
@@ -672,7 +690,8 @@
       (switch-to-buffer-other-window unbind)))
 
 
-  (buf-key "s-t")
+  (unbind-key "s-t")
+  (global-set-key (kbd "s-t")     'vertico-suspend)
   (global-set-key (kbd "C-,")     'duplicate-dwim)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (global-set-key (kbd "C-x C-x") 'kill-current-buffer)

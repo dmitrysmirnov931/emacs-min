@@ -43,9 +43,9 @@
     (setq lock-file-name-transforms `((".*" ,dir t))))
   (setq custom-file (no-littering-expand-etc-file-name "custom.el")))
 
-(set-face-attribute 'default nil :family "Iosevka SS08" :height 140)
-(set-face-attribute 'fixed-pitch nil :family "Iosevka SS08" :height 140)
-(set-face-attribute 'variable-pitch nil :family "Iosevka SS08" :height 140)
+(set-face-attribute 'default nil :family "PragmataPro" :height 170)
+(set-face-attribute 'fixed-pitch nil :family "PragmataPro" :height 170)
+(set-face-attribute 'variable-pitch nil :family "PragmataPro" :height 170)
 
 (use-package emacs
   :init
@@ -59,10 +59,10 @@
   (savehist-mode t)
   (delete-selection-mode t)
   (global-hl-line-mode t)
-  (display-line-numbers-mode t)
+  (line-number-mode t)
+  (column-number-mode t)
   :custom
-  (display-line-numbers 'relative)
-  (line-number-mode nil)
+  (truncate-lines t)
   (read-process-output-max (* 1024 1024))
   (history-delete-duplicates t)
   (line-spacing 1)
@@ -104,6 +104,9 @@
   (minibuffer-setup-hook . (lambda () (electric-pair-mode -1)))
   (minibuffer-exit-hook . (lambda () (electric-pair-mode t)))
   :config
+  (setq frame-title-format
+	(list (format "%s %%S: %%j " (system-name))
+		'(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
   (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
   (put 'narrow-to-region 'disabled nil)
   (put 'dired-find-alternate-file 'disabled nil))
@@ -159,10 +162,11 @@
   :ensure t
   :defer t
   :bind (("C-c h" . haskell-hoogle))
+  :hook (haskell-mode-hook . interactive-haskell-mode)
+  :custom
+  (haskell-hoogle-command nil)
   :config
-  (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  (setq haskell-hoogle-command nil))
+  (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode)))
 
 (use-package markdown-mode
   :ensure t
@@ -201,9 +205,9 @@
 (use-package vertico-directory
   :defer t
   :bind (:map vertico-map
-              ("RET"   . vertico-directory-enter)
-              ("DEL"   . vertico-directory-delete-char)
-              ("M-DEL" . vertico-directory-delete-word))
+      	      ("RET"   . vertico-directory-enter)
+      	      ("DEL"   . vertico-directory-delete-char)
+      	      ("M-DEL" . vertico-directory-delete-word))
   :after vertico
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
@@ -229,9 +233,7 @@
       ;; (setq-local corfu-auto nil) Enable/disable auto completion
       (corfu-mode 1)))
   (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
-  (add-hook 'eshell-mode-hook (lambda () (setq-local corfu-quit-no-match t
-                                                                       corfu-quit-at-boundary t
-                                                                       corfu-auto nil)))
+  (add-hook 'eshell-mode-hook (lambda () (setq-local corfu-quit-no-match t corfu-quit-at-boundary t corfu-auto nil)))
   ;; Avoid press RET twice in shell
   ;; https://github.com/minad/corfu#completing-in-the-eshell-or-shell
   (defun corfu-send-shell (&rest _)
@@ -262,17 +264,6 @@
               ("M-q" . corfu-quick-complete)
               ("C-q" . corfu-quick-insert)))
 
-(use-package affe
-  :ensure t
-  :defer t
-  :bind (("M-s d" . affe-find)
-         ("M-s g" . affe-grep))
-  :config
-  (defun affe-orderless-regexp-compiler (input _type _ignorecase)
-    (setq input (cdr (orderless-compile input)))
-    (cons input (apply-partially #'orderless--highlight input t)))
-  (setq affe-regexp-compiler #'affe-orderless-regexp-compiler))
-
 (use-package consult
   :ensure t
   :defer t
@@ -284,6 +275,8 @@
          ("M-g I"   . consult-imenu-multi)
          ("M-s e"   . consult-recent-file)
          ("M-s G"   . consult-git-grep)
+	 ("M-s d"   . consult-find)
+	 ("M-s f"   . consult-flymake)
          ("M-s r"   . consult-ripgrep)
          ("M-s l"   . consult-line)
          ("M-s L"   . consult-line-multi))
@@ -325,7 +318,7 @@
   :ensure t 
   :defer t
   :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  (embark-collect-mode-hook . consult-preview-at-point-mode))
 
 (use-package orderless
   :ensure t
@@ -368,7 +361,8 @@
   :ensure t
   :defer t
   :bind (("s-o" . ace-window)
-         ("s-p" . ace-delete-other-windows))
+         ("s-p" . ace-delete-other-windows)
+	   ("s-[" . ace-delete-window))
   :custom
   (aw-minibuffer-flag t)
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
@@ -444,29 +438,26 @@
   :config
   (global-diff-hl-mode))
 
-(use-package standard-themes
+(use-package modus-themes
   :ensure t
   :config
-  (load-theme 'standard-dark t))
+  (load-theme 'modus-operandi-tinted t))
 
-(use-package spacious-padding
+(use-package parrot
+  :ensure t
+  :custom
+  (parrot-mode t))
+
+(use-package ibuffer-project
   :ensure t
   :defer t
-  :hook (after-init . spacious-padding-mode)
-  :custom
-  (spacious-padding-widths
-   '(
-     :internal-border-width 15
-     :header-line-width 4
-     :mode-line-width 4
-     :tab-width 4
-     :right-divider-width 30
-     :scroll-bar-width 8
-     :fringe-width 8))
-  (spacious-padding-subtle-mode-line
-   '(
-     :mode-line-active 'default
-     :mode-line-inactive vertical-border)))
+  :hook (ibuffer-hook . (lambda () (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
+			  (unless (eq ibuffer-sorting-mode 'project-file-relative) (ibuffer-do-sort-by-project-file-relative)))))
+
+(use-package breadcrumb
+  :init (breadcrumb-mode t)
+  :defer t
+  :ensure t)
 
 (use-package org
   :config
@@ -514,7 +505,8 @@
     (switch-to-buffer-other-window unbind)))
 
 
-(buf-key "s-t")
+(unbind-key "s-t")
+(global-set-key (kbd "s-t")     'vertico-suspend)
 (global-set-key (kbd "C-,")     'duplicate-dwim)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-x") 'kill-current-buffer)

@@ -21,7 +21,8 @@
       message-log-max 16384
       package-enable-at-startup t
       use-file-dialog nil
-      use-dialog-box nil)
+      use-dialog-box nil
+      ns-use-proxy-icon nil)
 
 (push '(tool-bar-lines . 0) default-frame-alist)
 ;; (push '(undecorated . t) default-frame-alist)
@@ -37,6 +38,8 @@
 (advice-add #'display-startup-echo-area-message :override #'ignore)
 (advice-add #'display-startup-screen :override #'ignore)
 ;; (add-to-list 'default-frame-alist '(undecorated-round . t))
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . light))
 
 (startup-redirect-eln-cache
  (convert-standard-filename
