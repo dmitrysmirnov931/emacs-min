@@ -446,6 +446,7 @@
 (use-package parrot
   :ensure t
   :custom
+  (parrot-party-on-magit-push t)
   (parrot-mode t))
 
 (use-package ibuffer-project
@@ -506,6 +507,7 @@
 
 
 (unbind-key "s-t")
+(global-set-key (kbd "C-c p")   'parrot-start-animation)
 (global-set-key (kbd "s-t")     'vertico-suspend)
 (global-set-key (kbd "C-,")     'duplicate-dwim)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
