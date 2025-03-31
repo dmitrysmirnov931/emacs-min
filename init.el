@@ -43,9 +43,9 @@
     (setq lock-file-name-transforms `((".*" ,dir t))))
   (setq custom-file (no-littering-expand-etc-file-name "custom.el")))
 
-(set-face-attribute 'default nil :family "PragmataPro" :height 170)
-(set-face-attribute 'fixed-pitch nil :family "PragmataPro" :height 170)
-(set-face-attribute 'variable-pitch nil :family "PragmataPro" :height 170)
+(set-face-attribute 'default nil :family "PragmataPro" :height 150)
+(set-face-attribute 'fixed-pitch nil :family "PragmataPro" :height 150)
+(set-face-attribute 'variable-pitch nil :family "PragmataPro" :height 150)
 
 (use-package emacs
   :init
@@ -58,7 +58,6 @@
   (global-auto-revert-mode t)
   (savehist-mode t)
   (delete-selection-mode t)
-  (global-hl-line-mode t)
   (line-number-mode t)
   (column-number-mode t)
   :custom
@@ -106,15 +105,15 @@
   :config
   (setq frame-title-format
 	(list (format "%s %%S: %%j " (system-name))
-		'(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+	      '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
   (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
   (put 'narrow-to-region 'disabled nil)
   (put 'dired-find-alternate-file 'disabled nil))
 
 (use-package dired
   :hook (dired-mode . (lambda ()
-                              (auto-revert-mode)
-                              (hl-line-mode)))
+                        (auto-revert-mode)
+                        (hl-line-mode)))
   :config
   (setq dired-ls-F-marks-symlinks t
         dired-recursive-copies 'always
@@ -312,7 +311,7 @@
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                   (window-parameters (mode-line-format . none)))))
+                 (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
   :ensure t 
@@ -362,7 +361,7 @@
   :defer t
   :bind (("s-o" . ace-window)
          ("s-p" . ace-delete-other-windows)
-	   ("s-[" . ace-delete-window))
+	 ("s-[" . ace-delete-window))
   :custom
   (aw-minibuffer-flag t)
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
@@ -438,16 +437,14 @@
   :config
   (global-diff-hl-mode))
 
-(use-package modus-themes
+;; (use-package modus-themes
+;;   :ensure t
+;;   :config
+;;   (load-theme 'modus-operandi-tinted t))
+(use-package rg-themes
   :ensure t
   :config
-  (load-theme 'modus-operandi-tinted t))
-
-(use-package parrot
-  :ensure t
-  :custom
-  (parrot-party-on-magit-push t)
-  (parrot-mode t))
+  (load-theme 'rg-themes-ellas t))
 
 (use-package ibuffer-project
   :ensure t
@@ -460,12 +457,18 @@
   :defer t
   :ensure t)
 
+(use-package eat
+  :defer t
+  :ensure t
+  :config
+  (setq eat-term-name "xterm-256color"))
+
 (use-package org
   :config
   (setq org-confirm-babel-evaluate nil)
   (require 'org-tempo)
   (add-hook 'org-mode-hook (lambda () (setq-local electric-pair-inhibit-predicate
-                                                                    `(lambda (c) (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+                                                  `(lambda (c) (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
   (org-babel-do-load-languages 'org-babel-load-languages '((shell . t) (python . t))))
 
 (use-package denote
@@ -490,13 +493,13 @@
   (with-eval-after-load 'org-capture
     (setq denote-org-capture-specifiers "%l\n%i\n%?")
     (add-to-list 'org-capture-templates
-                   '("n" "New note (with denote.el)" plain
-                     (file denote-last-path)
-                     #'denote-org-capture
-                         :no-save t
-                         :immediate-finish nil
-                         :kill-buffer t
-                         :jump-to-captured t))))
+                 '("n" "New note (with denote.el)" plain
+                   (file denote-last-path)
+                   #'denote-org-capture
+                   :no-save t
+                   :immediate-finish nil
+                   :kill-buffer t
+                   :jump-to-captured t))))
 
 (defun my--eshell-other-window ()
   "Open a `eshell' in a new window"
@@ -507,6 +510,7 @@
 
 
 (unbind-key "s-t")
+(global-set-key (kbd "C-c e")   'eat)
 (global-set-key (kbd "C-c p")   'parrot-start-animation)
 (global-set-key (kbd "s-t")     'vertico-suspend)
 (global-set-key (kbd "C-,")     'duplicate-dwim)

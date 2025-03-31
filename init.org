@@ -127,81 +127,80 @@
 * Built-in packages configuration
 ** Core emacs
 #+begin_src emacs-lisp
-    (set-face-attribute 'default nil :family "PragmataPro" :height 170)
-    (set-face-attribute 'fixed-pitch nil :family "PragmataPro" :height 170)
-    (set-face-attribute 'variable-pitch nil :family "PragmataPro" :height 170)
+  (set-face-attribute 'default nil :family "PragmataPro" :height 150)
+  (set-face-attribute 'fixed-pitch nil :family "PragmataPro" :height 150)
+  (set-face-attribute 'variable-pitch nil :family "PragmataPro" :height 150)
 
-    (use-package emacs
-      :init
-      (tool-bar-mode -1)
-      (menu-bar-mode -1)
-      (scroll-bar-mode -1)
-      (electric-pair-mode t)
-      (which-key-mode t)
-      (show-paren-mode t)
-      (global-auto-revert-mode t)
-      (savehist-mode t)
-      (delete-selection-mode t)
-      (global-hl-line-mode t)
-      (line-number-mode t)
-      (column-number-mode t)
-      :custom
-      (truncate-lines t)
-      (read-process-output-max (* 1024 1024))
-      (history-delete-duplicates t)
-      (line-spacing 1)
-      (which-function-update-delay 0.5)
-      (ring-bell-function 'ignore)
-      (frame-resize-pixelwise t)
-      (use-short-answers t)
-      (ffap-machine-p-known 'reject)
-      (global-text-scale-adjust-resizes-frames nil)
-      (scroll-conservatively most-positive-fixnum)
-      (eldoc-echo-area-use-multiline-p nil)
-      ;; show-paren
-      (show-paren-delay 0.1)
-      (show-paren-highlight-openparen t)
-      (show-paren-when-point-inside-paren t)
-      (show-paren-when-point-in-periphery t)
-      ;; compilation buffer
-      (compilation-scroll-output t)
-      (compilation-always-kill t)
-      ;; minibuffer
-      (resize-mini-windows t)
-      (enable-recursive-minibuffers t)
-      (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
-      ;; vc
-      (version-control t)
-      (ediff-window-setup-function 'ediff-setup-windows-plain)
-      ;; backups
-      (backup-directory-alist `(("." . (expand-file-name "saves" no-littering-var-directory))))
-      (delete-old-versions t)
-      (kept-new-versions 6)
-      (kept-old-versions 2)
-      ;; isearch
-      (isearch-lazy-count t)
-      (lazy-count-prefix-format "(%s/%s) ")
-      (lazy-count-suffix-format nil)
-      (search-whitespace-regexp ".*?")
-      :hook
-      (minibuffer-setup-hook . cursor-intangible-mode)
-      (minibuffer-setup-hook . (lambda () (electric-pair-mode -1)))
-      (minibuffer-exit-hook . (lambda () (electric-pair-mode t)))
-      :config
-      (setq frame-title-format
-    	(list (format "%s %%S: %%j " (system-name))
-    		'(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-      (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
-      (put 'narrow-to-region 'disabled nil)
-      (put 'dired-find-alternate-file 'disabled nil))
+  (use-package emacs
+    :init
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+    (scroll-bar-mode -1)
+    (electric-pair-mode t)
+    (which-key-mode t)
+    (show-paren-mode t)
+    (global-auto-revert-mode t)
+    (savehist-mode t)
+    (delete-selection-mode t)
+    (line-number-mode t)
+    (column-number-mode t)
+    :custom
+    (truncate-lines t)
+    (read-process-output-max (* 1024 1024))
+    (history-delete-duplicates t)
+    (line-spacing 1)
+    (which-function-update-delay 0.5)
+    (ring-bell-function 'ignore)
+    (frame-resize-pixelwise t)
+    (use-short-answers t)
+    (ffap-machine-p-known 'reject)
+    (global-text-scale-adjust-resizes-frames nil)
+    (scroll-conservatively most-positive-fixnum)
+    (eldoc-echo-area-use-multiline-p nil)
+    ;; show-paren
+    (show-paren-delay 0.1)
+    (show-paren-highlight-openparen t)
+    (show-paren-when-point-inside-paren t)
+    (show-paren-when-point-in-periphery t)
+    ;; compilation buffer
+    (compilation-scroll-output t)
+    (compilation-always-kill t)
+    ;; minibuffer
+    (resize-mini-windows t)
+    (enable-recursive-minibuffers t)
+    (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
+    ;; vc
+    (version-control t)
+    (ediff-window-setup-function 'ediff-setup-windows-plain)
+    ;; backups
+    (backup-directory-alist `(("." . (expand-file-name "saves" no-littering-var-directory))))
+    (delete-old-versions t)
+    (kept-new-versions 6)
+    (kept-old-versions 2)
+    ;; isearch
+    (isearch-lazy-count t)
+    (lazy-count-prefix-format "(%s/%s) ")
+    (lazy-count-suffix-format nil)
+    (search-whitespace-regexp ".*?")
+    :hook
+    (minibuffer-setup-hook . cursor-intangible-mode)
+    (minibuffer-setup-hook . (lambda () (electric-pair-mode -1)))
+    (minibuffer-exit-hook . (lambda () (electric-pair-mode t)))
+    :config
+    (setq frame-title-format
+  	(list (format "%s %%S: %%j " (system-name))
+  	      '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+    (setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
+    (put 'narrow-to-region 'disabled nil)
+    (put 'dired-find-alternate-file 'disabled nil))
 #+end_src
 
 ** Dired
 #+begin_src emacs-lisp
   (use-package dired
     :hook (dired-mode . (lambda ()
-                                (auto-revert-mode)
-                                (hl-line-mode)))
+                          (auto-revert-mode)
+                          (hl-line-mode)))
     :config
     (setq dired-ls-F-marks-symlinks t
           dired-recursive-copies 'always
@@ -433,7 +432,7 @@
     ;; Hide the mode line of the Embark live/completions buffers
     (add-to-list 'display-buffer-alist
                  '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                     (window-parameters (mode-line-format . none)))))
+                   (window-parameters (mode-line-format . none)))))
 
   (use-package embark-consult
     :ensure t 
@@ -497,15 +496,15 @@
 
 ** Ace-window
 #+begin_src emacs-lisp
-    (use-package ace-window
-      :ensure t
-      :defer t
-      :bind (("s-o" . ace-window)
-             ("s-p" . ace-delete-other-windows)
-  	   ("s-[" . ace-delete-window))
-      :custom
-      (aw-minibuffer-flag t)
-      (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+  (use-package ace-window
+    :ensure t
+    :defer t
+    :bind (("s-o" . ace-window)
+           ("s-p" . ace-delete-other-windows)
+  	 ("s-[" . ace-delete-window))
+    :custom
+    (aw-minibuffer-flag t)
+    (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
 
 ** Evil
@@ -570,36 +569,40 @@
 
 ** Diff-hl
 #+begin_src emacs-lisp
-(use-package diff-hl
-  :ensure t
-  :defer t
-  :hook ((find-file . global-diff-hl-mode)
-	 (find-file . diff-hl-flydiff-mode)
-	 (find-file . diff-hl-margin-mode)
-	 (magit-pre-refresh . diff-hl-magit-pre-refresh)
-	 (magit-post-refresh . diff-hl-magit-post-refresh)
-	 (dired-mode . diff-hl-dir-mode))
-  :custom
-  (diff-hl-side 'left)
-  :config
-  (global-diff-hl-mode))
+  (use-package diff-hl
+    :ensure t
+    :defer t
+    :hook ((find-file . global-diff-hl-mode)
+  	 (find-file . diff-hl-flydiff-mode)
+  	 (find-file . diff-hl-margin-mode)
+  	 (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  	 (magit-post-refresh . diff-hl-magit-post-refresh)
+  	 (dired-mode . diff-hl-dir-mode))
+    :custom
+    (diff-hl-side 'left)
+    :config
+    (global-diff-hl-mode))
 #+end_src
 
 ** Themes
 #+begin_src emacs-lisp
-  (use-package modus-themes
+  ;; (use-package modus-themes
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'modus-operandi-tinted t))
+  (use-package rg-themes
     :ensure t
     :config
-    (load-theme 'modus-operandi-tinted t))
+    (load-theme 'rg-themes-ellas t))
 #+end_src
 ** Parrot
-#+begin_src emacs-lisp
-  (use-package parrot
-    :ensure t
-    :custom
-    (parrot-party-on-magit-push t)
-    (parrot-mode t))
-#+end_src
+# #+begin_src emacs-lisp
+#   (use-package parrot
+#     :ensure t
+#     :custom
+#     (parrot-party-on-magit-push t)
+#     (parrot-mode t))
+# #+end_src
 ** Spacious padding
 # #+begin_src emacs-lisp
 # (use-package spacious-padding
@@ -627,7 +630,7 @@
     :ensure t
     :defer t
     :hook (ibuffer-hook . (lambda () (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
-			  (unless (eq ibuffer-sorting-mode 'project-file-relative) (ibuffer-do-sort-by-project-file-relative)))))
+  			  (unless (eq ibuffer-sorting-mode 'project-file-relative) (ibuffer-do-sort-by-project-file-relative)))))
 #+end_src
 ** Breadcrumbs
 #+begin_src emacs-lisp
@@ -635,6 +638,14 @@
     :init (breadcrumb-mode t)
     :defer t
     :ensure t)
+#+end_src
+** Eat
+#+begin_src emacs-lisp
+  (use-package eat
+    :defer t
+    :ensure t
+    :config
+    (setq eat-term-name "xterm-256color"))
 #+end_src
 * Org
 ** Org configuration
@@ -644,7 +655,7 @@
     (setq org-confirm-babel-evaluate nil)
     (require 'org-tempo)
     (add-hook 'org-mode-hook (lambda () (setq-local electric-pair-inhibit-predicate
-                                                                      `(lambda (c) (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+                                                    `(lambda (c) (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
     (org-babel-do-load-languages 'org-babel-load-languages '((shell . t) (python . t))))
 #+end_src
 
@@ -672,13 +683,13 @@
     (with-eval-after-load 'org-capture
       (setq denote-org-capture-specifiers "%l\n%i\n%?")
       (add-to-list 'org-capture-templates
-                     '("n" "New note (with denote.el)" plain
-                       (file denote-last-path)
-                       #'denote-org-capture
-                           :no-save t
-                           :immediate-finish nil
-                           :kill-buffer t
-                           :jump-to-captured t))))
+                   '("n" "New note (with denote.el)" plain
+                     (file denote-last-path)
+                     #'denote-org-capture
+                     :no-save t
+                     :immediate-finish nil
+                     :kill-buffer t
+                     :jump-to-captured t))))
 #+end_src
 
 * Custom keymaps
@@ -692,6 +703,7 @@
 
 
   (unbind-key "s-t")
+  (global-set-key (kbd "C-c e")   'eat)
   (global-set-key (kbd "C-c p")   'parrot-start-animation)
   (global-set-key (kbd "s-t")     'vertico-suspend)
   (global-set-key (kbd "C-,")     'duplicate-dwim)

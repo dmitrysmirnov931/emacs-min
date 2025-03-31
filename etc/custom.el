@@ -8,13 +8,12 @@
  '(package-selected-packages
    '(ace-window auto-complete autothemer breadcrumb consult-eglot
 		consult-hoogle corfu csharp-mode denote diff-hl docker
-		embark-consult evil-collection evil-commentary
+		eat embark-consult evil-collection evil-commentary
 		evil-escape f flycheck gcmh haskell-mode
 		ibuffer-project magit marginalia markdown-mode
-		mini-frame modus-themes no-littering orderless parrot
-		pyvenv shut-up symbol-overlay timu-line undo-fu
-		vertico visual-fill-column wgrep writeroom-mode
-		zig-mode)))
+		mini-frame modus-themes no-littering orderless pyvenv
+		rg-themes shut-up symbol-overlay timu-line undo-fu
+		vertico wgrep writeroom-mode zig-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
