@@ -190,7 +190,7 @@
   (eglot-ignored-server-capabilities '(:inlayHintProvider))
   :config
   (add-to-list 'eglot-server-programs '((python-mode python-ts-mode) . ("basedpyright-langserver" "--stdio" "--verbose")))
-  (add-to-list 'eglot-server-programs '((csharp-mode csharp-ts-mode) . ("dotnet" "/Users/dmitry.arthurovich.smirnov@bidbax.no/omnisharp/OmniSharp.dll" "-lsp")))
+  (add-to-list 'eglot-server-programs '((csharp-mode csharp-ts-mode) . ("dotnet" "~/omnisharp/OmniSharp.dll" "-lsp")))
   (add-to-list 'eglot-server-programs '((zig-mode zig-ts-mode)       . ("zls"))))
 
 (use-package vertico
