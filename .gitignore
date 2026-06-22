@@ -1,0 +1,9 @@
+.claude/
+auto-save/
+backups/
+eln-cache/
+elpa/
+etc/
+transient/
+tree-sitter/
+var/
